@@ -1,4 +1,4 @@
-# NodeJS API Server Boilerplate
+# NodeJS API Server Boilerplate (Work In Progress)
 
 A boilerplate/starter project for quickly building APIs using NodeJS, TypeScrypt, Express & Sequelize
 
