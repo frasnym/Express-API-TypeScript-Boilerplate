@@ -1,0 +1,20 @@
+{
+	"name": "express-api-typescript-boilerplate",
+	"version": "1.0.0",
+	"description": "An express API boilerplace with type support",
+	"main": "index.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/frasnym/Express-API-TypeScript-Boilerplate.git"
+	},
+	"keywords": [],
+	"author": "Nyoman Frastyawan",
+	"license": "MIT",
+	"bugs": {
+		"url": "https://github.com/frasnym/Express-API-TypeScript-Boilerplate/issues"
+	},
+	"homepage": "https://github.com/frasnym/Express-API-TypeScript-Boilerplate#readme"
+}
