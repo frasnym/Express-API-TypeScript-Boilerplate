@@ -7,7 +7,7 @@
     "dev": "ts-node-dev --respawn ./src/index.ts",
     "lint": "npx eslint **/*.ts",
     "lint:fix": "npx prettier-eslint **/*.ts --write",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "echo \"Error: no test specified\"",
     "prepare": "husky install"
   },
   "repository": {
