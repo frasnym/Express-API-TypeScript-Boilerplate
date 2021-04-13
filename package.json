@@ -4,7 +4,7 @@
   "description": "An express API boilerplace with type support",
   "main": "index.js",
   "scripts": {
-    "dev": "ts-node-dev --respawn ./src/index.ts",
+    "dev": "cross-env NODE_ENV=development ts-node-dev --respawn ./src/index.ts",
     "lint": "npx eslint **/*.ts",
     "lint:fix": "npx prettier-eslint **/*.ts --write",
     "test": "echo \"Error: no test specified\"",
@@ -22,8 +22,12 @@
   },
   "homepage": "https://github.com/frasnym/Express-API-TypeScript-Boilerplate#readme",
   "devDependencies": {
+    "@types/express": "^4.17.11",
+    "@types/morgan": "^1.9.2",
+    "@types/node": "^14.14.37",
     "@typescript-eslint/eslint-plugin": "^4.21.0",
     "@typescript-eslint/parser": "^4.21.0",
+    "cross-env": "^7.0.3",
     "eslint": "^7.23.0",
     "eslint-config-standard": "^16.0.2",
     "eslint-plugin-import": "^2.22.1",
@@ -35,5 +39,11 @@
     "prettier-eslint-cli": "^5.0.1",
     "ts-node-dev": "^1.1.6",
     "typescript": "^4.2.4"
+  },
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "morgan": "^1.10.0",
+    "winston": "^3.3.3"
   }
 }

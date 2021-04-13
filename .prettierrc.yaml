@@ -2,3 +2,4 @@
 
 semi: false # We don't need semicolons at the end of line
 singleQuote: true # Use single quote
+trailingComma: none
