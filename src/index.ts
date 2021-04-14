@@ -1,11 +1,7 @@
-import path from 'path'
-import dotenv from 'dotenv'
-
 import app from './app'
 import { logger } from './helpers/logger'
 import envVars from './helpers/envVars'
 
-dotenv.config({ path: path.join(__dirname, '../.env') })
 const PORT = envVars.port
 
 const server = app.listen(PORT, () => {
