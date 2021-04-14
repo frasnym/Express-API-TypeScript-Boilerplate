@@ -1,12 +1,12 @@
 import express, { Application } from 'express'
-import morgan from './helpers/morgan'
+import { successHandler, errorHandler } from './helpers/morgan'
 
 const app: Application = express()
 
 // logger middleware
 if (process.env.NODE_ENV !== 'test') {
-  app.use(morgan.successHandler)
-  app.use(morgan.errorHandler)
+  app.use(successHandler)
+  app.use(errorHandler)
 }
 
 // parse json request body
