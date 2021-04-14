@@ -15,7 +15,6 @@ const envVarsSchema = Joi.object({
 }).unknown()
 
 const { value, error } = envVarsSchema.validate(process.env)
-
 if (error) {
   throw new Error(`Environment validation error: ${error.message}`)
 }
