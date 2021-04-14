@@ -1,8 +1,9 @@
 import morgan from 'morgan'
+import envVars from './envVars'
 import { logger } from './logger'
 
 const getIpFormat = () =>
-  process.env.NODE_ENV === 'production' ? ':remote-addr - ' : ''
+  envVars.env === 'production' ? ':remote-addr - ' : ''
 const successResponseFormat = `${getIpFormat()}:method :url :status - :response-time ms`
 const errorResponseFormat = `${getIpFormat()}:method :url :status - :response-time ms - message: :message`
 

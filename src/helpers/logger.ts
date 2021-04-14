@@ -1,4 +1,5 @@
 import { format, createLogger, transports } from 'winston'
+import envVars from './envVars'
 
 const enumerateErrorFormat = format((info) => {
   if (info instanceof Error) {
@@ -8,13 +9,11 @@ const enumerateErrorFormat = format((info) => {
 })
 
 const logger = createLogger({
-  level: process.env.NODE_ENV === 'development' ? 'debug' : 'info',
+  level: envVars.env === 'development' ? 'debug' : 'info',
   format: format.combine(
     format.timestamp(),
     enumerateErrorFormat(),
-    process.env.NODE_ENV === 'development'
-      ? format.colorize()
-      : format.uncolorize(),
+    envVars.env === 'development' ? format.colorize() : format.uncolorize(),
     format.splat(),
     format.printf(
       ({ timestamp, level, message }) => `[${timestamp}] [${level}]: ${message}`

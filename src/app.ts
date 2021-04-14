@@ -1,10 +1,11 @@
 import express, { Application } from 'express'
+import envVars from './helpers/envVars'
 import { successHandler, errorHandler } from './helpers/morgan'
 
 const app: Application = express()
 
 // logger middleware
-if (process.env.NODE_ENV !== 'test') {
+if (envVars.env !== 'test') {
   app.use(successHandler)
   app.use(errorHandler)
 }
