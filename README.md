@@ -27,6 +27,11 @@ src\
  |--index.ts        # App entry point
 ```
 
+## 💡 Reference
+
+- [hagopj13/node-express-boilerplate](https://github.com/hagopj13/node-express-boilerplate)
+- [ThomasHambach/express-joi-typescript-validate-middleware.ts](https://gist.github.com/ThomasHambach/6103774085fbe258a0377af35ed3d489)
+
 ## 👮 License
 
 [MIT](LICENSE)
