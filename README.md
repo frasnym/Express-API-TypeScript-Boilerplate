@@ -9,6 +9,7 @@ A boilerplate/starter project for quickly building APIs using NodeJS, TypeScrypt
 - **Logging**: using [Morgan](https://github.com/expressjs/morgan) integrated with [Winston](https://github.com/winstonjs/winston)
 - **Environment variables**: centralized load with [dotenv](https://github.com/motdotla/dotenv) and [cross-env](https://github.com/kentcdodds/cross-env)
 - **Validation**: request data validation using [Joi](https://joi.dev/api)
+- **Error Handling**: centralized error handling mechanism
 
 ## 🌲 Project Folder Structure
 
