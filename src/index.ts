@@ -1,6 +1,6 @@
 import app from './app'
-import { logger } from './helpers/logger'
-import envVars from './helpers/envVars'
+import { logger } from './config/logger'
+import envVars from './config/envVars'
 
 const PORT = envVars.port
 

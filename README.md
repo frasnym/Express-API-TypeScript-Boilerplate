@@ -10,6 +10,23 @@ A boilerplate/starter project for quickly building APIs using NodeJS, TypeScrypt
 - **Environment variables**: centralized load with [dotenv](https://github.com/motdotla/dotenv) and [cross-env](https://github.com/kentcdodds/cross-env)
 - **Validation**: request data validation using [Joi](https://joi.dev/api)
 
+## 🌲 Project Folder Structure
+
+```
+src\
+ |--config\         # Environment variables and configuration related things
+ |--controllers\    # Route controllers (controller layer)
+ |--docs\           # Swagger files
+ |--middlewares\    # Custom express middlewares
+ |--models\         # Mongoose models (data layer)
+ |--routes\         # Routes
+ |--services\       # Business logic (service layer)
+ |--utils\          # Utility classes and functions
+ |--validations\    # Request data validation schemas
+ |--app.ts          # Express app
+ |--index.ts        # App entry point
+```
+
 ## 👮 License
 
 [MIT](LICENSE)

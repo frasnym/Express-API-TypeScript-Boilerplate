@@ -1,6 +1,6 @@
 import express, { Application } from 'express'
-import envVars from './helpers/envVars'
-import { successHandler, errorHandler } from './helpers/morgan'
+import envVars from './config/envVars'
+import { successHandler, errorHandler } from './config/morgan'
 import { router } from './routes/v1'
 
 const app: Application = express()
