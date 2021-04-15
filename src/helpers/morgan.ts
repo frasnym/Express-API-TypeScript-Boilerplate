@@ -1,6 +1,9 @@
+import { Response } from 'express'
 import morgan from 'morgan'
 import envVars from './envVars'
 import { logger } from './logger'
+
+morgan.token('message', (_req, res: Response) => res.locals.errorMessage || '')
 
 const getIpFormat = () =>
   envVars.env === 'production' ? ':remote-addr - ' : ''
