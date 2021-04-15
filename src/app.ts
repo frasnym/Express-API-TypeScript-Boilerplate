@@ -1,6 +1,7 @@
 import express, { Application } from 'express'
 import envVars from './helpers/envVars'
 import { successHandler, errorHandler } from './helpers/morgan'
+import { router } from './routes/v1'
 
 const app: Application = express()
 
@@ -13,6 +14,7 @@ if (envVars.env !== 'test') {
 // parse json request body
 app.use(express.json())
 
+app.use('/v1', router)
 app.use('/', (_req, res) => {
   res.send('Boilerplate version 1.0.0')
 })
