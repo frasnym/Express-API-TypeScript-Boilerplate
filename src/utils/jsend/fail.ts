@@ -4,15 +4,9 @@ class FailResponse extends Error {
   constructor(
     public statusCode: number,
     public message: string,
-    public data: any,
-    public stack: string = ''
+    public data: any
   ) {
     super(message)
-    if (stack) {
-      this.stack = stack
-    } else {
-      Error.captureStackTrace(this, this.constructor)
-    }
   }
 }
 
