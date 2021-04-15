@@ -1,6 +1,6 @@
 export class SuccessResponse {
-  status = 'success'
-  data: any
+  public readonly status = 'success'
+  public data: any
 
   constructor(data: any) {
     this.data = data
