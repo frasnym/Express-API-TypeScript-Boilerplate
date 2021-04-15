@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from 'express'
 import Joi from 'joi'
+import { FailResponse } from '../utils/jsend/fail'
 
 export interface IValidation {
   body?: Joi.SchemaLike
@@ -10,16 +11,18 @@ export interface IValidation {
 }
 
 const validate = (schema: IValidation) => {
-  return (req: Request, res: Response, next: NextFunction) => {
+  return (req: Request, _res: Response, next: NextFunction) => {
     const { error } = Joi.compile(schema).validate(req, {
       allowUnknown: true
     })
 
     if (error) {
       const errorMessage = error.details[0].message
+      const errorData = {
+        [error.details[0].context?.key!]: error.details[0].message
+      }
 
-      res.locals.errorMessage = errorMessage
-      return res.status(400).send({ message: errorMessage })
+      throw new FailResponse(400, errorMessage, errorData)
     }
 
     return next()
