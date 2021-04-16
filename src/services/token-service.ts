@@ -70,11 +70,11 @@ const generateAuthTokens = async (user: UserAttributes): Promise<AuthToken> => {
   return {
     access: {
       token: accessToken,
-      expires: accessTokenExpires.toISOString()
+      expires: accessTokenExpires.getTime()
     },
     refresh: {
       token: refreshToken,
-      expires: refreshTokenExpires.toISOString()
+      expires: refreshTokenExpires.getTime()
     }
   }
 }

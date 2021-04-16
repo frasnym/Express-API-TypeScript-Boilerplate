@@ -26,11 +26,11 @@ export interface UserAttributes {
 export interface AuthToken {
   access: {
     token: string
-    expires: string
+    expires: number
   }
   refresh: {
     token: string
-    expires: string
+    expires: number
   }
 }
 
