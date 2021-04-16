@@ -52,11 +52,18 @@ describe('Auth Routes', () => {
     })
 
     test.todo('should return 400 error if email is already used')
-    test.todo(
-      'should return 400 error if password length is less than 8 characters'
-    )
-    test.todo(
-      'should return 400 error if password does not contain both letters and numbers'
-    )
+
+    test('should return 400 error if password length is less than 8 characters', async () => {
+      newUser.password = '1'
+      await request(app).post('/v1/auth/signup').send(newUser).expect(400)
+    })
+
+    test('should return 400 error if password does not contain both letters and numbers', async () => {
+      newUser.password = 'password'
+      await request(app).post('/v1/auth/signup').send(newUser).expect(400)
+
+      newUser.password = '12345678'
+      await request(app).post('/v1/auth/signup').send(newUser).expect(400)
+    })
   })
 })
