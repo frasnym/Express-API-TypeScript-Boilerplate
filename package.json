@@ -23,6 +23,7 @@
   "homepage": "https://github.com/frasnym/Express-API-TypeScript-Boilerplate#readme",
   "devDependencies": {
     "@types/express": "^4.17.11",
+    "@types/jsonwebtoken": "^8.5.1",
     "@types/morgan": "^1.9.2",
     "@types/node": "^14.14.37",
     "@typescript-eslint/eslint-plugin": "^4.21.0",
@@ -44,6 +45,7 @@
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "joi": "^17.4.0",
+    "jsonwebtoken": "^8.5.1",
     "morgan": "^1.10.0",
     "winston": "^3.3.3"
   }
