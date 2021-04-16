@@ -41,7 +41,9 @@ const generateToken = (
  * @param {UserAttributes} user
  * @returns {Promise<AuthToken>}
  */
-const generateAuthTokens = async (user: UserAttributes): Promise<AuthToken> => {
+const generateAuthTokens = async (
+  user: Partial<UserAttributes>
+): Promise<AuthToken> => {
   const NOW = new Date()
   const accessTokenExpires = dateAdd(
     NOW,
@@ -49,7 +51,7 @@ const generateAuthTokens = async (user: UserAttributes): Promise<AuthToken> => {
     envVars.jwt.accessExpirationMinutes
   )
   const accessToken = generateToken(
-    user.id,
+    user.id!,
     accessTokenExpires,
     tokenTypes.ACCESS
   )
@@ -60,7 +62,7 @@ const generateAuthTokens = async (user: UserAttributes): Promise<AuthToken> => {
     envVars.jwt.refreshExpirationDays
   )
   const refreshToken = generateToken(
-    user.id,
+    user.id!,
     refreshTokenExpires,
     tokenTypes.REFRESH
   )
