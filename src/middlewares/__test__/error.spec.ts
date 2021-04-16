@@ -47,7 +47,7 @@ describe('Error Middleware', () => {
     })
 
     test('should send proper JSend Error response and put the error message in res.locals', () => {
-      const error = new ErrorResponse(500, 'Any message')
+      const error = new ErrorResponse(500, 'Any message', undefined, 'ANY')
       const res = httpMocks.createResponse()
       const sendSpy = jest.spyOn(res, 'send')
 
@@ -56,7 +56,8 @@ describe('Error Middleware', () => {
       expect(sendSpy).toHaveBeenCalledWith(
         expect.objectContaining({
           message: error.message,
-          status: 'error'
+          status: 'error',
+          code: error.code
         })
       )
       expect(res.locals.errorMessage).toBe(error.message)
@@ -64,7 +65,7 @@ describe('Error Middleware', () => {
 
     test('should put the stack in the JSend Error response if in development mode', () => {
       envVars.env = 'development'
-      const error = new ErrorResponse(400, 'Any message')
+      const error = new ErrorResponse(400, 'Any message', 'Any stack')
       const res = httpMocks.createResponse()
       const sendSpy = jest.spyOn(res, 'send')
 
