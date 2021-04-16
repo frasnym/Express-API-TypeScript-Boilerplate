@@ -1,7 +1,6 @@
 import { ErrorRequestHandler } from 'express'
 import envVars from '../config/envVars'
 import { logger } from '../config/logger'
-import { ErrorResponse, FailResponse } from '../utils/jsend'
 
 interface JsendError {
   statusCode: number
@@ -25,8 +24,8 @@ const errorHandler: ErrorRequestHandler = (
   const response = {
     status,
     message: err.message,
-    ...(err instanceof FailResponse && { data: err.data }),
-    ...(err instanceof ErrorResponse && { code: err.code }),
+    ...(err.data && { data: err.data }),
+    ...(err.code && { code: err.code }),
     ...(envVars.env === 'development' && { stack: err.stack })
   }
 
