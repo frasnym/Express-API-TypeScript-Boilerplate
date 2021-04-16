@@ -4,9 +4,11 @@ import { SuccessResponse } from '../utils/jsend'
 
 const signUp = catchAsync(async (req, res, next) => {
   const user = await authService.createUser(req.body)
-  const token = await tokenService.generateAuthTokens(user)
+  const tokens = await tokenService.generateAuthTokens(user)
   // TODO: Create token
-  res.status(201).send(new SuccessResponse({ user, token }).serializeResponse())
+  res
+    .status(201)
+    .send(new SuccessResponse({ user, tokens }).serializeResponse())
 })
 
 export { signUp }

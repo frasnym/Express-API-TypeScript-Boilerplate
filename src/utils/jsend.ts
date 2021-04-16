@@ -33,7 +33,7 @@ export class ErrorResponse extends Error {
     public statusCode: number,
     public message: string = 'Internal server error',
     public stack: any = undefined,
-    public code: number = 0
+    public code: string = ''
   ) {
     super(message)
     if (stack) {

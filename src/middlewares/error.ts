@@ -7,7 +7,7 @@ interface JsendError {
   status: string
   message?: string
   data?: any
-  code?: number
+  code?: string
   stack?: any
 }
 

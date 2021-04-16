@@ -1,8 +1,8 @@
 import { Router } from 'express'
-import { authRouter } from './auth-router'
+import { authRoute } from './auth-route'
 
 const router = Router()
 
-router.use('/auth', authRouter)
+router.use('/auth', authRoute)
 
 export { router }
