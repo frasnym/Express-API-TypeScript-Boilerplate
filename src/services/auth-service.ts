@@ -13,7 +13,10 @@ const createUser = async (
 
   // TODO: Insert to DB
   const user: Partial<UserAttributes> = userBody
+
+  user.id = Math.random()
   delete user.password
+  delete user.pin
 
   return user
 }
