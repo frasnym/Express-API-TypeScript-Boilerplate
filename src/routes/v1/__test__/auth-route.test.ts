@@ -65,5 +65,25 @@ describe('Auth Routes', () => {
       newUser.password = '12345678'
       await request(app).post('/v1/auth/signup').send(newUser).expect(400)
     })
+
+    test('should return 400 error if phone doesn\'t start with "62"', async () => {
+      newUser.phone = '123'
+      await request(app).post('/v1/auth/signup').send(newUser).expect(400)
+    })
+
+    test('should return 400 error if phone is not numbers', async () => {
+      newUser.phone = '62abc'
+      await request(app).post('/v1/auth/signup').send(newUser).expect(400)
+    })
+
+    test('should return 400 error if pin length is less than 6 characters', async () => {
+      newUser.pin = '12345'
+      await request(app).post('/v1/auth/signup').send(newUser).expect(400)
+    })
+
+    test('should return 400 error if pin is not numbers', async () => {
+      newUser.pin = 'abc123'
+      await request(app).post('/v1/auth/signup').send(newUser).expect(400)
+    })
   })
 })
