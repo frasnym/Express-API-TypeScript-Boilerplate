@@ -45,5 +45,18 @@ describe('Auth Routes', () => {
         refresh: { token: expect.anything(), expires: expect.anything() }
       })
     })
+
+    test('should return 400 error if email is invalid', async () => {
+      newUser.email = 'invalidEmail'
+      await request(app).post('/v1/auth/signup').send(newUser).expect(400)
+    })
+
+    test.todo('should return 400 error if email is already used')
+    test.todo(
+      'should return 400 error if password length is less than 8 characters'
+    )
+    test.todo(
+      'should return 400 error if password does not contain both letters and numbers'
+    )
   })
 })
