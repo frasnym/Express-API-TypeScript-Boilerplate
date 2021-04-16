@@ -7,4 +7,4 @@ const router = Router()
 
 router.post('/signup', validate(signupSchema), authController.signUp)
 
-export { router as authRouter }
+export { router as authRoute }
