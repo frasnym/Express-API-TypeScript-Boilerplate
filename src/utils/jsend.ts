@@ -31,8 +31,8 @@ export class ErrorResponse extends Error {
 
   constructor(
     public statusCode: number,
-    public message: string,
-    public stack: any = {},
+    public message: string = 'Internal server error',
+    public stack: any = undefined,
     public code: number = 0
   ) {
     super(message)
