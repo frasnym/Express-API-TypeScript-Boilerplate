@@ -10,6 +10,7 @@ A boilerplate/starter project for quickly building APIs using NodeJS, TypeScrypt
 - **Environment variables**: centralized load with [dotenv](https://github.com/motdotla/dotenv) and [cross-env](https://github.com/kentcdodds/cross-env)
 - **Validation**: request data validation using [Joi](https://joi.dev/api)
 - **Error Handling**: centralized error handling mechanism
+- **Testing**: unit and integration tests using [Jest](https://jestjs.io)
 
 ## 🌲 Project Folder Structure
 
