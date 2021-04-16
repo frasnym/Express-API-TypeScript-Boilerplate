@@ -53,35 +53,36 @@ describe('Auth Routes', () => {
 
     test.todo('should return 400 error if email is already used')
 
-    test('should return 400 error if password length is less than 8 characters', async () => {
+    test('should return 400 error if invalid password is provided', async () => {
+      // password length is less than 8 characters
       newUser.password = '1'
       await request(app).post('/v1/auth/signup').send(newUser).expect(400)
-    })
 
-    test('should return 400 error if password does not contain both letters and numbers', async () => {
+      // password does not contain numbers
       newUser.password = 'password'
       await request(app).post('/v1/auth/signup').send(newUser).expect(400)
 
+      // password does not contain letters
       newUser.password = '12345678'
       await request(app).post('/v1/auth/signup').send(newUser).expect(400)
     })
 
-    test('should return 400 error if phone doesn\'t start with "62"', async () => {
+    test('should return 400 error if invalid phone provided', async () => {
+      // phone doesn't start with "62"
       newUser.phone = '123'
       await request(app).post('/v1/auth/signup').send(newUser).expect(400)
-    })
 
-    test('should return 400 error if phone is not numbers', async () => {
+      // phone contain letter(s)
       newUser.phone = '62abc'
       await request(app).post('/v1/auth/signup').send(newUser).expect(400)
     })
 
-    test('should return 400 error if pin length is less than 6 characters', async () => {
+    test('should return 400 error if invalid pin provided', async () => {
+      // pin length is less than 6 characters
       newUser.pin = '12345'
       await request(app).post('/v1/auth/signup').send(newUser).expect(400)
-    })
 
-    test('should return 400 error if pin is not numbers', async () => {
+      // pin contain letter(s)
       newUser.pin = 'abc123'
       await request(app).post('/v1/auth/signup').send(newUser).expect(400)
     })
