@@ -8,3 +8,70 @@ const router = Router()
 router.post('/signup', validate(signupSchema), authController.signUp)
 
 export { router as authRoute }
+
+/**
+ * @swagger
+ * tags:
+ *   name: Auth
+ *   description: Authentication
+ */
+
+/**
+ * @swagger
+ * /auth/signup:
+ *   post:
+ *     summary: Sign Up as a user
+ *     tags: [Auth]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - name
+ *               - phone
+ *               - email
+ *               - pin
+ *               - password
+ *             properties:
+ *               name:
+ *                 type: string
+ *               phone:
+ *                 type: string
+ *                 description: Phone must be unique
+ *               email:
+ *                 type: string
+ *                 format: email
+ *                 description: Email must be unique
+ *               pin:
+ *                 type: string
+ *                 format: password
+ *                 length: 6
+ *                 description: All characters must be a number
+ *               password:
+ *                 type: string
+ *                 format: password
+ *                 minLength: 8
+ *                 description: At least one number and one letter
+ *             example:
+ *               name: Debbie Erdman
+ *               phone: '628760207244'
+ *               email: Mireille_Stracke@yahoo.com
+ *               pin: '000123'
+ *               password: password1
+ *     responses:
+ *       "201":
+ *         description: Success creating a new user
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 user:
+ *                   $ref: '#/components/schemas/User'
+ *                 tokens:
+ *                   $ref: '#/components/schemas/AuthTokens'
+ *       "400":
+ *         $ref: '#/components/responses/MissingParameters'
+ */
