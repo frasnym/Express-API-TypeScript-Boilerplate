@@ -74,6 +74,7 @@
 
     /* Advanced Options */
     "skipLibCheck": true /* Skip type checking of declaration files. */,
-    "forceConsistentCasingInFileNames": true /* Disallow inconsistently-cased references to the same file. */
+    "forceConsistentCasingInFileNames": true /* Disallow inconsistently-cased references to the same file. */,
+    "resolveJsonModule": true /* With --resolveJsonModule enabled, we no longer get a type error in our TypeScript file. Even better, we now get type checking and autocompletion! */
   }
 }
