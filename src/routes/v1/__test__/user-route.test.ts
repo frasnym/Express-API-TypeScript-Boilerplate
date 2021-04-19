@@ -14,5 +14,9 @@ describe('User routes', () => {
       expect(res.body.data.user).toHaveProperty('name')
       // TODO: Check all returned value
     })
+
+    test('should return 401 if access token is missing', async () => {
+      await request(app).get('/v1/users').send().expect(401)
+    })
   })
 })
