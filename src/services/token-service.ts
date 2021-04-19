@@ -81,4 +81,4 @@ const generateAuthTokens = async (
   }
 }
 
-export { generateAuthTokens }
+export { generateAuthTokens, generateToken }
