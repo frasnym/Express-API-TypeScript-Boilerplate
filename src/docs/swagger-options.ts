@@ -23,7 +23,7 @@ const options: swaggerJSDoc.Options = {
       }
     ]
   },
-  apis: ['./src/docs/*.yml', './src/routes/v1/*.ts']
+  apis: ['./src/docs/*.yaml', './src/routes/v1/*.ts']
 }
 
 export { options as swaggerJSDocOptions }
