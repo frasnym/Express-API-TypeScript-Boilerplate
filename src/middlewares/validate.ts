@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express'
 import Joi from 'joi'
-import { FailResponse } from '../utils/jsend/fail'
+import { FailResponse } from '../utils/jsend'
 
 export interface IValidation {
   body?: Joi.SchemaLike
