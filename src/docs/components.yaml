@@ -60,6 +60,16 @@ components:
             status: 'fail'
             message: 'Password is required'
             data: { password: 'Password is required' }
+    Unauthorized:
+      description: 'Unauthorized access'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            status: 'fail'
+            message: 'Please authenticate'
+            data: 'Please authenticate'
 
   securitySchemes:
     bearerAuth:
