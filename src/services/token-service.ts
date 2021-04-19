@@ -12,12 +12,7 @@ import { ErrorResponse } from '../utils/jsend'
  * @param {string} secret
  * @returns {string}
  */
-const generateToken = (
-  userId: number,
-  expires: Date,
-  type: string,
-  secret: string = envVars.jwt.secret
-): string => {
+const generateToken = (userId: number, expires: Date, type: string): string => {
   if (!(Object.values(tokenTypes).indexOf(type) > -1)) {
     const stack = {
       location: 'generateToken',
@@ -33,7 +28,7 @@ const generateToken = (
     exp: expires.getTime(),
     type
   }
-  return jwt.sign(payload, secret)
+  return jwt.sign(payload, envVars.jwt.secret)
 }
 
 /**
