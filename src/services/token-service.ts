@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken'
 import envVars from '../config/envVars'
 import { tokenTypes } from '../config/tokens'
-import { AuthToken, UserAttributes } from '../types/rest-api'
+import { AuthToken, JWTPayload, UserAttributes } from '../types/rest-api'
 import { dateAdd } from '../utils/date'
 import { ErrorResponse } from '../utils/jsend'
 
@@ -27,7 +27,7 @@ const generateToken = (
     throw new ErrorResponse(500, undefined, stack)
   }
 
-  const payload = {
+  const payload: JWTPayload = {
     sub: userId,
     iat: new Date().getTime(),
     exp: expires.getTime(),

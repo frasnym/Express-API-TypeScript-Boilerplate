@@ -48,6 +48,16 @@ export interface EnvVars {
 }
 
 /**
+ * JWT Payload needed for authorization
+ */
+export interface JWTPayload {
+  sub: number
+  iat: number
+  exp: number
+  type: string
+}
+
+/**
  * One of: year, quarter, month, week, day, hour, minute, second
  * Used to work with dateAdd utils
  */
