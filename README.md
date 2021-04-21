@@ -10,6 +10,7 @@ A boilerplate/starter project for quickly building APIs using NodeJS, TypeScrypt
 - **Environment variables**: centralized load with [dotenv](https://github.com/motdotla/dotenv) and [cross-env](https://github.com/kentcdodds/cross-env)
 - **Validation**: request data validation using [Joi](https://joi.dev/api)
 - **Error Handling**: centralized error handling mechanism
+- **API Response**: using [JSend](https://github.com/omniti-labs/jsend) specification
 - **Testing**: unit and integration tests using [Jest](https://jestjs.io)
 - **Authentication and authorization**: using [passport](http://www.passportjs.org)
 - **API documentation**: with [swaggerJSDoc](https://github.com/Surnet/swagger-jsdoc) and [swaggerUI](https://github.com/scottie1984/swagger-ui-express)
