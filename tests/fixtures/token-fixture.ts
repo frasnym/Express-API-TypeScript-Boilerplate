@@ -1,7 +1,7 @@
 import envVars from '../../src/config/envVars'
 import { generateToken } from '../../src/services/token-service'
 import { dateAdd } from '../../src/utils/date'
-const { tokenTypes } = require('../../src/config/tokens')
+import { tokenTypes } from '../../src/config/tokens'
 
 const NOW = new Date()
 const accessTokenExpires = dateAdd(

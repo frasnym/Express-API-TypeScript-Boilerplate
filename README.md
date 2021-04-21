@@ -12,6 +12,7 @@ A boilerplate/starter project for quickly building APIs using NodeJS, TypeScrypt
 - **Error Handling**: centralized error handling mechanism
 - **Testing**: unit and integration tests using [Jest](https://jestjs.io)
 - **Authentication and authorization**: using [passport](http://www.passportjs.org)
+- **API documentation**: with [swaggerJSDoc](https://github.com/Surnet/swagger-jsdoc) and [swaggerUI](https://github.com/scottie1984/swagger-ui-express)
 
 ## 🌲 Project Folder Structure
 
