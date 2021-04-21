@@ -20,7 +20,12 @@ const envVarsSchema = Joi.object({
     .description('minutes after which reset password token expires'),
   JWT_VERIFY_EMAIL_EXPIRATION_MINUTES: Joi.number()
     .default(10)
-    .description('minutes after which verify email token expires')
+    .description('minutes after which verify email token expires'),
+  POSTGRES_USER: Joi.string().default('root'),
+  POSTGRES_PASSWORD: Joi.string().default('root'),
+  POSTGRES_DB: Joi.string().default('boilerplate'),
+  POSTGRES_PORT: Joi.number().default(3000),
+  POSTGRES_HOST: Joi.string().default('localhost')
 }).unknown()
 
 const { value, error } = envVarsSchema.validate(process.env)
@@ -40,5 +45,12 @@ export default {
     resetPasswordExpirationMinutes:
       envVars.JWT_RESET_PASSWORD_EXPIRATION_MINUTES,
     verifyEmailExpirationMinutes: envVars.JWT_VERIFY_EMAIL_EXPIRATION_MINUTES
+  },
+  postgres: {
+    host: envVars.POSTGRES_HOST,
+    user: envVars.POSTGRES_USER,
+    password: envVars.POSTGRES_PASSWORD,
+    database: envVars.POSTGRES_DB,
+    port: envVars.POSTGRES_PORT
   }
 }

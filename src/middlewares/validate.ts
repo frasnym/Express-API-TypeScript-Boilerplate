@@ -12,7 +12,7 @@ export interface IValidation {
 
 const validate = (schema: IValidation) => {
   return (req: Request, _res: Response, next: NextFunction) => {
-    const { error } = Joi.compile(schema).validate(req, {
+    const { error, value } = Joi.compile(schema).validate(req, {
       allowUnknown: true
     })
 
@@ -25,6 +25,7 @@ const validate = (schema: IValidation) => {
       throw new FailResponse(400, errorMessage, errorData)
     }
 
+    Object.assign(req, value)
     return next()
   }
 }

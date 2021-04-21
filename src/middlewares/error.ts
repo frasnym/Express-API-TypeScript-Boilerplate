@@ -1,6 +1,8 @@
 import { ErrorRequestHandler } from 'express'
+import { UniqueConstraintError } from 'sequelize'
 import envVars from '../config/envVars'
 import { logger } from '../config/logger'
+import { ErrorResponse, FailResponse } from '../utils/jsend'
 
 interface JsendError {
   statusCode: number
@@ -9,6 +11,22 @@ interface JsendError {
   data?: any
   code?: string
   stack?: any
+}
+
+const errorConverter: ErrorRequestHandler = (err, _req, _res, next) => {
+  let error = err
+
+  if (!(error instanceof FailResponse) && !(error instanceof ErrorResponse)) {
+    let stack: string | undefined
+    if (error instanceof UniqueConstraintError) {
+      stack = error.original.message
+    } else {
+      console.error({ err })
+    }
+
+    error = new ErrorResponse(500, error.message, stack, 'ECV')
+  }
+  next(error)
 }
 
 const errorHandler: ErrorRequestHandler = (
@@ -36,4 +54,4 @@ const errorHandler: ErrorRequestHandler = (
   return res.status(statusCode).send(response)
 }
 
-export { errorHandler }
+export { errorHandler, errorConverter }

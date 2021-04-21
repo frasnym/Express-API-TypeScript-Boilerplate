@@ -1,4 +1,6 @@
+import { User } from '../config/db'
 import { UserAttributes } from '../types/rest-api'
+import { FailResponse } from '../utils/jsend'
 
 /**
  * Create a user
@@ -8,17 +10,23 @@ import { UserAttributes } from '../types/rest-api'
 const createUser = async (
   userBody: UserAttributes
 ): Promise<Partial<UserAttributes>> => {
-  //  TODO: Check if email is taken
+  const isEmailTaken = await User.isEmailTaken(userBody.email)
+  if (isEmailTaken) {
+    throw new FailResponse(400, 'Email already registered', {
+      email: 'Email already registered'
+    })
+  }
+
   //  TODO: Check if phone is taken
 
-  // TODO: Insert to DB
-  const user: Partial<UserAttributes> = userBody
+  const createdUser = await User.scope('withoutCredentials').create(userBody)
 
-  user.id = Math.random()
-  delete user.password
-  delete user.pin
-
-  return user
+  return {
+    id: createdUser.id,
+    email: createdUser.email,
+    name: createdUser.name,
+    phone: createdUser.phone
+  }
 }
 
 export { createUser }
