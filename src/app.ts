@@ -5,7 +5,7 @@ import helmet from 'helmet'
 import envVars from './config/envVars'
 import * as morgan from './config/morgan'
 import { jwtStrategy } from './config/passport'
-import { errorHandler } from './middlewares/error'
+import { errorConverter, errorHandler } from './middlewares/error'
 import { router } from './routes/v1'
 import { FailResponse } from './utils/jsend'
 
@@ -41,6 +41,9 @@ app.use(/^[/]{1}$/, (_req, res) => {
 app.use(/(?<=.{1}).+/, () => {
   throw new FailResponse(404, 'Not found', 'Not found')
 })
+
+// convert error to JSend Error, if needed
+app.use(errorConverter)
 
 // error handler middleware
 app.use(errorHandler)
