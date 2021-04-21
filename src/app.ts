@@ -1,5 +1,6 @@
 import express, { Application } from 'express'
 import passport from 'passport'
+import helmet from 'helmet'
 
 import envVars from './config/envVars'
 import * as morgan from './config/morgan'
@@ -17,6 +18,9 @@ if (envVars.env !== 'test') {
   app.use(morgan.successHandler)
   app.use(morgan.errorHandler)
 }
+
+// set security HTTP headers
+app.use(helmet())
 
 // parse json request body
 app.use(express.json())
