@@ -23,6 +23,7 @@ export class FailResponse extends Error {
     public data: any
   ) {
     super(message)
+    Object.setPrototypeOf(this, FailResponse.prototype)
   }
 }
 
@@ -36,6 +37,7 @@ export class ErrorResponse extends Error {
     public code: string = ''
   ) {
     super(message)
+    Object.setPrototypeOf(this, ErrorResponse.prototype)
     if (stack) {
       this.stack = stack
     } else {
