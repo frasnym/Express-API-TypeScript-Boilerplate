@@ -24,7 +24,8 @@ const envVarsSchema = Joi.object({
   POSTGRES_USER: Joi.string().default('root'),
   POSTGRES_PASSWORD: Joi.string().default('root'),
   POSTGRES_DB: Joi.string().default('boilerplate'),
-  POSTGRES_PORT: Joi.number().default(3000)
+  POSTGRES_PORT: Joi.number().default(3000),
+  POSTGRES_HOST: Joi.string().default('localhost')
 }).unknown()
 
 const { value, error } = envVarsSchema.validate(process.env)
@@ -46,6 +47,7 @@ export default {
     verifyEmailExpirationMinutes: envVars.JWT_VERIFY_EMAIL_EXPIRATION_MINUTES
   },
   postgres: {
+    host: envVars.POSTGRES_HOST,
     user: envVars.POSTGRES_USER,
     password: envVars.POSTGRES_PASSWORD,
     database: envVars.POSTGRES_DB,

@@ -49,6 +49,7 @@ export interface EnvVars {
   POSTGRES_PASSWORD: string
   POSTGRES_DB: string
   POSTGRES_PORT: number
+  POSTGRES_HOST: string
 }
 
 /**
