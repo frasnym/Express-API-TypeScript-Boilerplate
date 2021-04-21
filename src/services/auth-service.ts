@@ -19,12 +19,14 @@ const createUser = async (
 
   //  TODO: Check if phone is taken
 
-  const user = await User.create(userBody)
+  const createdUser = await User.scope('withoutCredentials').create(userBody)
 
-  // TODO: delete user.password
-  // TODO: delete user.pin
-
-  return user
+  return {
+    id: createdUser.id,
+    email: createdUser.email,
+    name: createdUser.name,
+    phone: createdUser.phone
+  }
 }
 
 export { createUser }
