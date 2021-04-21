@@ -1,8 +1,8 @@
-import { DataTypes, Sequelize } from 'sequelize'
+import { DataTypes, Op, Sequelize } from 'sequelize'
 import { UserStatic } from '../types/rest-api'
 
 export function UserFactory(sequelize: Sequelize): UserStatic {
-  return <UserStatic>sequelize.define('users', {
+  const User = <UserStatic>sequelize.define('users', {
     id: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
@@ -40,4 +40,27 @@ export function UserFactory(sequelize: Sequelize): UserStatic {
       defaultValue: DataTypes.NOW
     }
   })
+
+  User.isEmailTaken = async (
+    email: string,
+    excludeUserId?: number | undefined
+  ) => {
+    const options = excludeUserId
+      ? {
+          id: {
+            [Op.ne]: excludeUserId
+          }
+        }
+      : {}
+
+    const user = await User.findOne({
+      where: {
+        email,
+        ...options
+      }
+    })
+
+    return !!user
+  }
+  return User
 }
