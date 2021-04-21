@@ -1,5 +1,6 @@
 import request from 'supertest'
 import app from '../../../app'
+import { User } from '../../../config/db'
 import { UserAttributes } from '../../../types/rest-api'
 
 describe('Auth Routes', () => {
@@ -8,7 +9,7 @@ describe('Auth Routes', () => {
     beforeEach(() => {
       newUser = {
         name: 'random_name',
-        email: 'random@email.com',
+        email: 'Random_address@email.com',
         password: 'password1',
         phone: '6281999200555',
         pin: '123456'
@@ -26,19 +27,18 @@ describe('Auth Routes', () => {
       expect(res.body.data.user).toEqual({
         id: expect.anything(),
         name: newUser.name,
-        email: newUser.email,
+        email: newUser.email?.toLowerCase(),
         phone: newUser.phone
       })
 
-      // const dbUser = await User.findById(res.body.user.id)
-      // expect(dbUser).toBeDefined()
-      // expect(dbUser.password).not.toBe(newUser.password)
-      // expect(dbUser).toMatchObject({
-      //   name: newUser.name,
-      //   email: newUser.email,
-      //   role: 'user',
-      //   isEmailVerified: false
-      // })
+      const dbUser = await User.findByPk(res.body.data.user.id)
+      expect(dbUser).toBeDefined()
+      expect(dbUser?.password).not.toBe(newUser.password)
+      expect(dbUser).toMatchObject({
+        name: newUser.name,
+        email: newUser.email?.toLowerCase(),
+        phone: newUser.phone
+      })
 
       expect(res.body.data.tokens).toEqual({
         access: { token: expect.anything(), expires: expect.anything() },
