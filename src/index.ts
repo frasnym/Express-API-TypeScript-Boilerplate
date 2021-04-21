@@ -1,11 +1,17 @@
+import { Server } from 'node:http'
 import app from './app'
 import { logger } from './config/logger'
 import envVars from './config/envVars'
+import { dbConfig } from './config/db'
 
 const PORT = envVars.port
 
-const server = app.listen(PORT, () => {
-  logger.info(`Application is up and running on port ${PORT}`)
+let server: Server
+dbConfig.sync().then(() => {
+  logger.info('Sequelize: All models were synchronized successfully')
+  server = app.listen(PORT, () => {
+    logger.info(`Application is up and running on port ${PORT}`)
+  })
 })
 
 const exitHandler = () => {
