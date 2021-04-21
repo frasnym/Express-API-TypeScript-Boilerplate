@@ -1,4 +1,4 @@
-// import { BuildOptions, Model } from 'sequelize';
+import { BuildOptions, Model } from 'sequelize'
 
 /**
  * Define how user model should looks like
@@ -13,11 +13,11 @@ export interface UserAttributes {
   createdAt?: Date
   updatedAt?: Date
 }
-// export interface UserModel extends Model<UserAttributes>, UserAttributes {}
-// export class User extends Model<UserModel, UserAttributes> {}
-// export type UserStatic = typeof Model & {
-//     new (values?: object, options?: BuildOptions): UserModel;
-// };
+export interface UserModel extends Model<UserAttributes>, UserAttributes {}
+export class User extends Model<UserModel, UserAttributes> {}
+export type UserStatic = typeof Model & {
+  new (values?: object, options?: BuildOptions): UserModel
+}
 
 /**
  * This will be show a complete version of token (both access & refresh token)
@@ -45,6 +45,10 @@ export interface EnvVars {
   JWT_REFRESH_EXPIRATION_DAYS: number
   JWT_RESET_PASSWORD_EXPIRATION_MINUTES: number
   JWT_VERIFY_EMAIL_EXPIRATION_MINUTES: number
+  POSTGRES_USER: string
+  POSTGRES_PASSWORD: string
+  POSTGRES_DB: string
+  POSTGRES_PORT: number
 }
 
 /**
