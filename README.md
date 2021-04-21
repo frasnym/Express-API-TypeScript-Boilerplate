@@ -14,6 +14,7 @@ A boilerplate/starter project for quickly building APIs using NodeJS, TypeScrypt
 - **Authentication and authorization**: using [passport](http://www.passportjs.org)
 - **API documentation**: with [swaggerJSDoc](https://github.com/Surnet/swagger-jsdoc) and [swaggerUI](https://github.com/scottie1984/swagger-ui-express)
 - **Security**: set security HTTP headers using [helmet](https://helmetjs.github.io)
+- **[Docker](https://docker.com/)** support
 
 ## 🌲 Project Folder Structure
 

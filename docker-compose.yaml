@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  postgresdb:
+    image: 'postgres:alpine'
+    restart: always
+    env_file: ./.env
+    environment:
+      POSTGRES_USER: $POSTGRES_USER
+      POSTGRES_PASSWORD: $POSTGRES_PASSWORD
+      POSTGRES_DB: $POSTGRES_DB
+    ports:
+      - $POSTGRES_LOCAL_PORT:$POSTGRES_DOCKER_PORT
+    volumes:
+      - postgresql-volume:/var/lib/postgresql/data
+  node-app:
+    build: .
+    image: node-app
+    env_file: ./.env
+    ports:
+      - $NODE_DOCKER_PORT:$PORT
+    volumes:
+      - ./:/usr/src/node-app
+    depends_on:
+      - postgresdb
+    stdin_open: true
+    tty: true
+
+volumes:
+  postgresql-volume:
