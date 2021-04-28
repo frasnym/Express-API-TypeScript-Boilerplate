@@ -1,0 +1,17 @@
+import { User } from '../../src/config/db'
+import { UserAttributes } from '../../src/types/rest-api'
+
+const userOne: UserAttributes = {
+  id: 1,
+  name: 'My name is user one',
+  password: 'password1',
+  email: 'user_one@email.com',
+  phone: '6281000111222',
+  pin: '123456'
+}
+
+const insertUsers = async (users: UserAttributes[]) => {
+  await User.bulkCreate(users.map((user) => user))
+}
+
+export { userOne, insertUsers }

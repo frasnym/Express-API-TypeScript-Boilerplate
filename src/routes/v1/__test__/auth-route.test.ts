@@ -1,4 +1,5 @@
 import request from 'supertest'
+import { insertUsers, userOne } from '../../../../tests/fixtures/user-fixture'
 import app from '../../../app'
 import { User } from '../../../config/db'
 import { UserAttributes } from '../../../types/rest-api'
@@ -46,12 +47,34 @@ describe('Auth Routes', () => {
       })
     })
 
-    test('should return 400 error if email is invalid', async () => {
+    test('should return 400 error if invalid email provided', async () => {
       newUser.email = 'invalidEmail'
       await request(app).post('/v1/auth/signup').send(newUser).expect(400)
     })
 
-    test.todo('should return 400 error if email is already used')
+    test('should return 400 error if email is already used', async () => {
+      await insertUsers([userOne])
+      newUser.email = userOne.email
+
+      await request(app).post('/v1/auth/signup').send(newUser).expect(400)
+    })
+
+    test('should return 400 error if invalid phone provided', async () => {
+      // phone doesn't start with "62"
+      newUser.phone = '123'
+      await request(app).post('/v1/auth/signup').send(newUser).expect(400)
+
+      // phone contain letter(s)
+      newUser.phone = '62abc'
+      await request(app).post('/v1/auth/signup').send(newUser).expect(400)
+    })
+
+    test('should return 400 error if phone is already used', async () => {
+      await insertUsers([userOne])
+      newUser.email = userOne.phone
+
+      await request(app).post('/v1/auth/signup').send(newUser).expect(400)
+    })
 
     test('should return 400 error if invalid password is provided', async () => {
       // password length is less than 8 characters
@@ -64,16 +87,6 @@ describe('Auth Routes', () => {
 
       // password does not contain letters
       newUser.password = '12345678'
-      await request(app).post('/v1/auth/signup').send(newUser).expect(400)
-    })
-
-    test('should return 400 error if invalid phone provided', async () => {
-      // phone doesn't start with "62"
-      newUser.phone = '123'
-      await request(app).post('/v1/auth/signup').send(newUser).expect(400)
-
-      // phone contain letter(s)
-      newUser.phone = '62abc'
       await request(app).post('/v1/auth/signup').send(newUser).expect(400)
     })
 
