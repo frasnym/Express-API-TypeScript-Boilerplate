@@ -17,7 +17,12 @@ const createUser = async (
     })
   }
 
-  //  TODO: Check if phone is taken
+  const isPhoneTaken = await User.isPhoneTaken(userBody.phone)
+  if (isPhoneTaken) {
+    throw new FailResponse(400, 'Phone already registered', {
+      phone: 'Phone already registered'
+    })
+  }
 
   const createdUser = await User.scope('withoutCredentials').create(userBody)
 

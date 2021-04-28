@@ -21,6 +21,10 @@ export type UserStatic = typeof Model & {
     email: string,
     excludeUserId?: number | undefined
   ): Promise<boolean>
+  isPhoneTaken(
+    phone: string,
+    excludeUserId?: number | undefined
+  ): Promise<boolean>
 }
 
 /**

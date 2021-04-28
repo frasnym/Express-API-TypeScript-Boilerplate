@@ -85,5 +85,28 @@ export function UserFactory(sequelize: Sequelize): UserStatic {
 
     return !!user
   }
+
+  User.isPhoneTaken = async (
+    phone: string,
+    excludeUserId?: number | undefined
+  ) => {
+    const options = excludeUserId
+      ? {
+          id: {
+            [Op.ne]: excludeUserId
+          }
+        }
+      : {}
+
+    const user = await User.findOne({
+      where: {
+        phone,
+        ...options
+      }
+    })
+
+    return !!user
+  }
+
   return User
 }
