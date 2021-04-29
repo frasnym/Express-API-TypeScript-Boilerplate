@@ -11,4 +11,12 @@ const signUp = catchAsync(async (req, res) => {
     .send(new SuccessResponse({ user, tokens }).serializeResponse())
 })
 
-export { signUp }
+const signIn = catchAsync(async (req, res) => {
+  const { email, password } = req.body
+  const user = await authService.signInUserWithEmailAndPassword(email, password)
+  res
+    .status(200)
+    .send(new SuccessResponse(user.withoutCredentials()).serializeResponse())
+})
+
+export { signUp, signIn }

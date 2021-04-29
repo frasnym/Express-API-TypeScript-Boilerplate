@@ -12,4 +12,11 @@ const signUpSchema: IValidation = {
   })
 }
 
-export { signUpSchema }
+const signInSchema: IValidation = {
+  body: Joi.object({
+    email: Joi.string().required().lowercase(),
+    password: Joi.string().required()
+  })
+}
+
+export { signUpSchema, signInSchema }

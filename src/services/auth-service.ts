@@ -1,11 +1,10 @@
+import { userService } from '.'
 import { User } from '../config/db'
 import { UserAttributes } from '../types/rest-api'
 import { FailResponse } from '../utils/jsend'
 
 /**
  * Create a user
- * @param {UserAttributes} userBody
- * @returns {Promise<Partial<UserAttributes>>}
  */
 const createUser = async (
   userBody: UserAttributes
@@ -34,4 +33,20 @@ const createUser = async (
   }
 }
 
-export { createUser }
+/**
+ * SignIn with email and password
+ */
+const signInUserWithEmailAndPassword = async (
+  email: string,
+  password: string
+) => {
+  const user = await userService.getUserByEmail(email)
+  if (!user || !user.isPasswordMatch(password)) {
+    throw new FailResponse(400, 'Incorrect email or password', {
+      signin: 'Incorrect email or password'
+    })
+  }
+  return user
+}
+
+export { createUser, signInUserWithEmailAndPassword }
