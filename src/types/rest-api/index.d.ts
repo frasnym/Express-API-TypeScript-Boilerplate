@@ -28,6 +28,24 @@ export type UserStatic = typeof Model & {
 }
 
 /**
+ * Define how token model should looks like
+ */
+export interface TokenAttributes {
+  token: string
+  userId: number
+  type: 'access' | 'refresh' | 'resetPassword' | 'verifyEmail'
+  expires: Date
+  blacklisted: boolean
+  createdAt?: Date
+  updatedAt?: Date
+}
+export interface TokenModel extends Model<TokenAttributes>, TokenAttributes {}
+export class Token extends Model<TokenModel, TokenAttributes> {}
+export type TokenStatic = typeof Model & {
+  new (values?: object, options?: BuildOptions): TokenModel
+}
+
+/**
  * This will be show a complete version of token (both access & refresh token)
  * complete with time it will expires.
  */
