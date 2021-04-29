@@ -1,2 +1,2 @@
-export * as userModel from './user-model'
-export * as tokenModel from './token-model'
+export * from './user-model'
+export * from './token-model'
