@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { BuildOptions, Model } from 'sequelize'
 
 /**
@@ -28,12 +29,23 @@ export type UserStatic = typeof Model & {
 }
 
 /**
+ * Token's type enum
+ * Used for declaring "type" on TokenAttributes
+ */
+export const enum TokenType {
+  access = 'access',
+  refresh = 'refresh',
+  resetPassword = 'resetPassword',
+  verifyEmail = 'verifyEmail'
+}
+
+/**
  * Define how token model should looks like
  */
 export interface TokenAttributes {
   token: string
   userId: number
-  type: 'access' | 'refresh' | 'resetPassword' | 'verifyEmail'
+  type: TokenType
   expires: Date
   blacklisted: boolean
   createdAt?: Date

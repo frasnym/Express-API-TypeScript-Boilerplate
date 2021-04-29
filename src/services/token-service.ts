@@ -1,16 +1,18 @@
 import jwt from 'jsonwebtoken'
+import { Token } from '../config/db'
 import envVars from '../config/envVars'
 import { tokenTypes } from '../config/tokens'
-import { AuthToken, JWTPayload, UserAttributes } from '../types/rest-api'
+import {
+  AuthToken,
+  JWTPayload,
+  TokenType,
+  UserAttributes
+} from '../types/rest-api'
 import { dateAdd } from '../utils/date'
 import { ErrorResponse } from '../utils/jsend'
 
 /**
  * Generate token
- * @param {number} userId
- * @param {Date} expires
- * @param {string} secret
- * @returns {string}
  */
 const generateToken = (userId: number, expires: Date, type: string): string => {
   if (!(Object.values(tokenTypes).indexOf(type) > -1)) {
@@ -32,9 +34,28 @@ const generateToken = (userId: number, expires: Date, type: string): string => {
 }
 
 /**
+ * Save a token
+ */
+const saveToken = async (
+  token: string,
+  userId: number,
+  expires: Date,
+  type: TokenType,
+  blacklisted: boolean = false
+) => {
+  const tokenDoc = await Token.create({
+    token,
+    userId,
+    expires: expires,
+    type,
+    blacklisted
+  })
+
+  return tokenDoc
+}
+
+/**
  * Generate auth tokens
- * @param {UserAttributes} user
- * @returns {Promise<AuthToken>}
  */
 const generateAuthTokens = async (
   user: Partial<UserAttributes>
@@ -56,13 +77,19 @@ const generateAuthTokens = async (
     'day',
     envVars.jwt.refreshExpirationDays
   )
+
   const refreshToken = generateToken(
     user.id!,
     refreshTokenExpires,
     tokenTypes.REFRESH
   )
 
-  // TODO: Save token to database
+  await saveToken(
+    refreshToken,
+    user.id!,
+    refreshTokenExpires,
+    TokenType.refresh
+  )
 
   return {
     access: {
@@ -76,4 +103,4 @@ const generateAuthTokens = async (
   }
 }
 
-export { generateAuthTokens, generateToken }
+export { generateAuthTokens, generateToken, saveToken }

@@ -6,6 +6,8 @@ import { signupSchema } from '../../validations'
 const router = Router()
 
 router.post('/signup', validate(signupSchema), authController.signUp)
+// TODO: SignIn
+// TODO: SignOut
 
 export { router as authRoute }
 

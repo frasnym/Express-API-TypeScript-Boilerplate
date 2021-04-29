@@ -5,6 +5,11 @@ import { auth } from '../../middlewares/auth'
 const router = Router()
 
 router.get('/', auth(), userController.getUser)
+// TODO: Request verification
+// TODO: Send verification
+// TODO: Forgot password
+// TODO: Change password
+// TODO: Update current user data
 
 export { router as userRoute }
 
