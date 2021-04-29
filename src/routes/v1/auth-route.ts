@@ -1,11 +1,11 @@
 import { Router } from 'express'
 import { authController } from '../../controllers'
 import { validate } from '../../middlewares/validate'
-import { signupSchema } from '../../validations'
+import { signUpSchema } from '../../validations'
 
 const router = Router()
 
-router.post('/signup', validate(signupSchema), authController.signUp)
+router.post('/signup', validate(signUpSchema), authController.signUp)
 // TODO: SignIn
 // TODO: SignOut
 
