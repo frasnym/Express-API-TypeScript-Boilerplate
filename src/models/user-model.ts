@@ -1,6 +1,6 @@
 import { DataTypes, Op, Sequelize } from 'sequelize'
 import bcrypt from 'bcryptjs'
-import { UserStatic } from '../types/rest-api'
+import { UserAttributes, UserModel, UserStatic } from '../types/rest-api'
 
 export function UserFactory(sequelize: Sequelize): UserStatic {
   const User = <UserStatic>sequelize.define(
@@ -106,6 +106,20 @@ export function UserFactory(sequelize: Sequelize): UserStatic {
     })
 
     return !!user
+  }
+
+  User.prototype.isPasswordMatch = function (password: string) {
+    return bcrypt.compareSync(password, this.password)
+  }
+
+  User.prototype.withoutCredentials = function () {
+    const userDoc: UserModel = this
+    const user: Partial<UserAttributes> = userDoc.toJSON()
+
+    delete user.password
+    delete user.pin
+
+    return user
   }
 
   return User
