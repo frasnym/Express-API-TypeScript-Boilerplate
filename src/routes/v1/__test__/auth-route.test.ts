@@ -1,7 +1,7 @@
 import request from 'supertest'
 import { insertUsers, userOne } from '../../../../tests/fixtures/user-fixture'
 import app from '../../../app'
-import { User } from '../../../config/db'
+import { Token, User } from '../../../config/db'
 import { UserAttributes } from '../../../types/rest-api'
 
 describe('Auth Routes', () => {
@@ -45,6 +45,12 @@ describe('Auth Routes', () => {
         access: { token: expect.anything(), expires: expect.anything() },
         refresh: { token: expect.anything(), expires: expect.anything() }
       })
+
+      const dbToken = await Token.findByPk(res.body.data.tokens.refresh.token)
+      expect(dbToken).toBeDefined()
+      expect(new Date(dbToken?.expires!.toString()!).getTime()).toBeGreaterThan(
+        new Date().getTime()
+      )
     })
 
     test('should return 400 error if invalid email provided', async () => {
