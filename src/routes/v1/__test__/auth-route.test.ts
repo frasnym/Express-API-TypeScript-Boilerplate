@@ -106,4 +106,10 @@ describe('Auth Routes', () => {
       await request(app).post('/v1/auth/signup').send(newUser).expect(400)
     })
   })
+
+  describe('POST /v1/auth/signin', () => {
+    test.todo('should return 200 and login user if email and password match')
+    test.todo('should return 401 error if there are no users with that email')
+    test.todo('should return 401 error if password is wrong')
+  })
 })
