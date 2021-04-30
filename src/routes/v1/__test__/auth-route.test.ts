@@ -108,7 +108,38 @@ describe('Auth Routes', () => {
   })
 
   describe('POST /v1/auth/signin', () => {
-    test.todo('should return 200 and login user if email and password match')
+    test('should return 200 and login user if email and password match', async () => {
+      await insertUsers([userOne])
+
+      const signInCredentials = {
+        email: userOne.email,
+        password: userOne.password
+      }
+      const res = await request(app)
+        .post('/v1/auth/signin')
+        .send(signInCredentials)
+        .expect(200)
+
+      expect(res.body.data.user).not.toHaveProperty('password')
+      expect(res.body.data.user).not.toHaveProperty('pin')
+      expect(res.body.data.user).toEqual({
+        id: expect.anything(),
+        name: userOne.name,
+        email: userOne.email?.toLowerCase(),
+        phone: userOne.phone
+      })
+
+      expect(res.body.data.tokens).toEqual({
+        access: { token: expect.anything(), expires: expect.anything() },
+        refresh: { token: expect.anything(), expires: expect.anything() }
+      })
+
+      const dbToken = await Token.findByPk(res.body.data.tokens.refresh.token)
+      expect(dbToken).toBeDefined()
+      expect(new Date(dbToken?.expires!.toString()!).getTime()).toBeGreaterThan(
+        new Date().getTime()
+      )
+    })
     test.todo('should return 401 error if there are no users with that email')
     test.todo('should return 401 error if password is wrong')
   })
