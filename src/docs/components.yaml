@@ -17,7 +17,6 @@ components:
         phone: '6281999200555'
         email: 'fake@example.com'
         name: 'fake name'
-        role: 'user'
 
     Token:
       type: object

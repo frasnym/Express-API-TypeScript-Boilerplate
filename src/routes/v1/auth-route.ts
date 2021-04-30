@@ -7,7 +7,6 @@ const router = Router()
 
 router.post('/signup', validate(signUpSchema), authController.signUp)
 router.post('/signin', validate(signInSchema), authController.signIn)
-// TODO: SignIn Swagger
 // TODO: SignOut
 
 export { router as authRoute }
@@ -77,4 +76,54 @@ export { router as authRoute }
  *                   $ref: '#/components/schemas/AuthTokens'
  *       "400":
  *         $ref: '#/components/responses/MissingParameters'
+ */
+
+/**
+ * @swagger
+ * /auth/signin:
+ *   post:
+ *     summary: Sign In user with email and password
+ *     tags: [Auth]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - email
+ *               - password
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 format: email
+ *                 description: Registered user's email
+ *               password:
+ *                 type: string
+ *                 format: password
+ *                 description: Registered user's password
+ *             example:
+ *               email: valid_email@mail.com
+ *               password: password1
+ *     responses:
+ *       "200":
+ *         description: User succesfully signed in
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 user:
+ *                   $ref: '#/components/schemas/User'
+ *                 tokens:
+ *                   $ref: '#/components/schemas/AuthTokens'
+ *       "401":
+ *         description: Invalid email or password
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ *             example:
+ *               code: 401
+ *               message: Invalid email or password
  */
