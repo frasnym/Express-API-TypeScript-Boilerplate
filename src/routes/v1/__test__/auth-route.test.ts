@@ -377,8 +377,7 @@ describe('Auth Routes', () => {
 
     test('should return 500 error if refresh token is expired', async () => {
       await insertUsers([userOne])
-      const NOW = new Date()
-      const refreshTokenExpires = dateAdd(NOW, 'minute', -1)
+      const refreshTokenExpires = dateAdd(new Date(), 'minute', -1)
       const refreshToken = generateToken(
         userOne.id,
         refreshTokenExpires,
@@ -396,7 +395,5 @@ describe('Auth Routes', () => {
         .send({ refreshToken })
         .expect(500)
     })
-
-    test.todo('should return 401 error if user is not found')
   })
 })
