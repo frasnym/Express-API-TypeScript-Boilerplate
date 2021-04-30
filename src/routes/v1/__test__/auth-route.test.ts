@@ -170,4 +170,37 @@ describe('Auth Routes', () => {
       expect(res.body.data.tokens).toBeUndefined()
     })
   })
+
+  describe('POST /v1/auth/signout', () => {
+    test('should return 204 if refresh token is valid', async () => {
+      await insertUsers([userOne])
+
+      const signInCredentials = {
+        email: userOne.email,
+        password: userOne.password
+      }
+      const signInResponse = await request(app)
+        .post('/v1/auth/signin')
+        .send(signInCredentials)
+        .expect(200)
+
+      const refreshToken = signInResponse.body.data.tokens.refresh.token
+
+      await request(app)
+        .post('/v1/auth/signout')
+        .send({ refreshToken })
+        .expect(204)
+
+      const tokenDoc = await Token.findByPk(refreshToken)
+      expect(tokenDoc).toBeNull()
+    })
+
+    test.todo(
+      'should return 400 error if refresh token is missing from request body'
+    )
+    test.todo(
+      'should return 404 error if refresh token is not found in the database'
+    )
+    test.todo('should return 404 error if refresh token is blacklisted')
+  })
 })
