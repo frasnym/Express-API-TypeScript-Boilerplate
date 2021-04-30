@@ -24,7 +24,12 @@ const errorConverter: ErrorRequestHandler = (err, _req, _res, next) => {
       console.error({ err })
     }
 
-    error = new ErrorResponse(500, error.message, stack, 'ECV')
+    error = new ErrorResponse(
+      500,
+      error.message || 'Internal Server Error',
+      stack,
+      'ECV'
+    )
   }
   next(error)
 }

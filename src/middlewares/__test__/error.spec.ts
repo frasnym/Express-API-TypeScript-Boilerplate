@@ -6,6 +6,10 @@ import { errorConverter, errorHandler } from '../error'
 
 describe('Error Middleware', () => {
   describe('ErrorConverter', () => {
+    beforeEach(() => {
+      console.error = jest.fn()
+    })
+
     test('should return the same JSend Error object it was called with', () => {
       const failNext = jest.fn()
       const failResponse = new FailResponse(400, 'Any error', 'Any data')
@@ -28,7 +32,7 @@ describe('Error Middleware', () => {
       expect(errorNext).toHaveBeenCalledWith(errorResponse)
     })
 
-    test('should convert any Error to ErrorResponse and preserve its message', () => {
+    test('should convert an Error to ErrorResponse and preserve its message', () => {
       const error = new Error('Any error')
       const next = jest.fn()
 
@@ -42,7 +46,28 @@ describe('Error Middleware', () => {
       expect(next).toHaveBeenCalledWith(expect.any(ErrorResponse))
       expect(next).toHaveBeenCalledWith(
         expect.objectContaining({
-          message: error.message
+          message: error.message,
+          code: 'ECV'
+        })
+      )
+    })
+
+    test('should convert an Error without message to ErrorResponse with default message', () => {
+      const error = new Error()
+      const next = jest.fn()
+
+      errorConverter(
+        error,
+        httpMocks.createRequest(),
+        httpMocks.createResponse(),
+        next
+      )
+
+      expect(next).toHaveBeenCalledWith(expect.any(ErrorResponse))
+      expect(next).toHaveBeenCalledWith(
+        expect.objectContaining({
+          message: 'Internal Server Error',
+          code: 'ECV'
         })
       )
     })
