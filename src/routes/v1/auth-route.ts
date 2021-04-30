@@ -1,13 +1,14 @@
 import { Router } from 'express'
 import { authController } from '../../controllers'
 import { validate } from '../../middlewares/validate'
-import { signInSchema, signUpSchema } from '../../validations'
+import { signInSchema, signOutSchema, signUpSchema } from '../../validations'
 
 const router = Router()
 
 router.post('/signup', validate(signUpSchema), authController.signUp)
 router.post('/signin', validate(signInSchema), authController.signIn)
-// TODO: SignOut
+router.post('/signout', validate(signOutSchema), authController.signOut)
+// TODO: SignOut Swagger
 
 export { router as authRoute }
 

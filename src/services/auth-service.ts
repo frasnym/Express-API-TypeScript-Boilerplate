@@ -1,5 +1,6 @@
 import { userService } from '.'
-import { User } from '../config/db'
+import { Token, User } from '../config/db'
+import { tokenTypes } from '../config/tokens'
 import { UserAttributes, UserModel } from '../types/rest-api'
 import { FailResponse } from '../utils/jsend'
 
@@ -40,4 +41,25 @@ const signInUserWithEmailAndPassword = async (
   return user
 }
 
-export { createUser, signInUserWithEmailAndPassword }
+/**
+ * SignOut
+ * Delete refresh token from database
+ */
+const signOut = async (refreshToken: string) => {
+  const refreshTokenDoc = await Token.findOne({
+    where: {
+      token: refreshToken,
+      type: tokenTypes.REFRESH,
+      blacklisted: false
+    }
+  })
+  if (!refreshTokenDoc) {
+    throw new FailResponse(404, 'Token not found', {
+      refreshToken: 'not found'
+    })
+  }
+
+  await refreshTokenDoc?.destroy()
+}
+
+export { createUser, signInUserWithEmailAndPassword, signOut }

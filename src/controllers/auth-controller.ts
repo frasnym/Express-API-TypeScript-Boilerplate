@@ -27,4 +27,10 @@ const signIn = catchAsync(async (req, res) => {
   )
 })
 
-export { signUp, signIn }
+const signOut = catchAsync(async (req, res) => {
+  await authService.signOut(req.body.refreshToken)
+
+  res.status(204).send()
+})
+
+export { signUp, signIn, signOut }
