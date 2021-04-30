@@ -2,9 +2,33 @@ import httpMocks from 'node-mocks-http'
 import envVars from '../../config/envVars'
 import { logger } from '../../config/logger'
 import { ErrorResponse, FailResponse } from '../../utils/jsend'
-import { errorHandler } from '../error'
+import { errorConverter, errorHandler } from '../error'
 
 describe('Error Middleware', () => {
+  describe('ErrorConverter', () => {
+    test('should return the same JSend Error object it was called with', () => {
+      const failNext = jest.fn()
+      const failResponse = new FailResponse(400, 'Any error', 'Any data')
+      errorConverter(
+        failResponse,
+        httpMocks.createRequest(),
+        httpMocks.createResponse(),
+        failNext
+      )
+      expect(failNext).toHaveBeenCalledWith(failResponse)
+
+      const errorNext = jest.fn()
+      const errorResponse = new ErrorResponse(500)
+      errorConverter(
+        errorResponse,
+        httpMocks.createRequest(),
+        httpMocks.createResponse(),
+        errorNext
+      )
+      expect(errorNext).toHaveBeenCalledWith(errorResponse)
+    })
+  })
+
   describe('ErrorHandler', () => {
     beforeEach(() => {
       // @ts-ignore
