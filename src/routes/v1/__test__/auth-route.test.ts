@@ -199,9 +199,31 @@ describe('Auth Routes', () => {
       await request(app).post('/v1/auth/signout').expect(400)
     })
 
-    test.todo(
-      'should return 404 error if refresh token is not found in the database'
-    )
+    test('should return 404 error if refresh token is not found in the database', async () => {
+      await insertUsers([userOne])
+
+      const signInCredentials = {
+        email: userOne.email,
+        password: userOne.password
+      }
+      const signInResponse = await request(app)
+        .post('/v1/auth/signin')
+        .send(signInCredentials)
+        .expect(200)
+
+      const refreshToken = signInResponse.body.data.tokens.refresh.token
+
+      await request(app)
+        .post('/v1/auth/signout')
+        .send({ refreshToken })
+        .expect(204)
+
+      await request(app)
+        .post('/v1/auth/signout')
+        .send({ refreshToken })
+        .expect(404)
+    })
+
     test.todo('should return 404 error if refresh token is blacklisted')
   })
 })
