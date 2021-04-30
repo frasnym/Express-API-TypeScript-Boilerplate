@@ -8,4 +8,11 @@ const getUserByEmail = (email: string): Promise<UserModel | null> => {
   return User.findOne({ where: { email } })
 }
 
-export { getUserByEmail }
+/**
+ * Get user by id
+ */
+const getUserById = (id: number): Promise<UserModel | null> => {
+  return User.findByPk(id)
+}
+
+export { getUserByEmail, getUserById }

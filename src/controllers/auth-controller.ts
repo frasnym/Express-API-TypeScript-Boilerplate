@@ -33,4 +33,10 @@ const signOut = catchAsync(async (req, res) => {
   res.status(204).send()
 })
 
-export { signUp, signIn, signOut }
+const refreshToken = catchAsync(async (req, res) => {
+  const tokens = await authService.refreshAuth(req.body.refreshToken)
+
+  res.send(new SuccessResponse(tokens).serializeResponse())
+})
+
+export { signUp, signIn, signOut, refreshToken }

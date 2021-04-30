@@ -1,8 +1,8 @@
-import { userService } from '.'
+import { tokenService, userService } from '.'
 import { Token, User } from '../config/db'
 import { tokenTypes } from '../config/tokens'
-import { UserAttributes, UserModel } from '../types/rest-api'
-import { FailResponse } from '../utils/jsend'
+import { TokenType, UserAttributes, UserModel } from '../types/rest-api'
+import { ErrorResponse, FailResponse } from '../utils/jsend'
 
 /**
  * Create a user
@@ -62,4 +62,23 @@ const signOut = async (refreshToken: string) => {
   await refreshTokenDoc?.destroy()
 }
 
-export { createUser, signInUserWithEmailAndPassword, signOut }
+const refreshAuth = async (refreshToken: string) => {
+  try {
+    const refreshTokenDoc = await tokenService.verifyToken(
+      refreshToken,
+      tokenTypes.REFRESH as TokenType
+    )
+
+    const user = await userService.getUserById(refreshTokenDoc.userId)
+    if (!user) {
+      throw new Error()
+    }
+    await refreshTokenDoc.destroy()
+
+    return tokenService.generateAuthTokens(user)
+  } catch (error) {
+    throw new ErrorResponse(500, 'Please authenticate', error, 'RFA')
+  }
+}
+
+export { createUser, signInUserWithEmailAndPassword, signOut, refreshAuth }

@@ -103,4 +103,19 @@ const generateAuthTokens = async (
   }
 }
 
-export { generateAuthTokens, generateToken, saveToken }
+/**
+ * Verify token and return token doc (or throw an error if it is not valid)
+ */
+const verifyToken = async (token: string, type: TokenType) => {
+  const payload = jwt.verify(token, envVars.jwt.secret) as { sub: number }
+
+  const tokenDoc = await Token.findOne({
+    where: { token, type, userId: payload.sub, blacklisted: false }
+  })
+  if (!tokenDoc) {
+    throw new Error('Token not found')
+  }
+  return tokenDoc
+}
+
+export { generateAuthTokens, generateToken, saveToken, verifyToken }

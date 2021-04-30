@@ -25,4 +25,10 @@ const signOutSchema: IValidation = {
   })
 }
 
-export { signUpSchema, signInSchema, signOutSchema }
+const refreshTokenSchema: IValidation = {
+  body: Joi.object({
+    refreshToken: Joi.string().required()
+  })
+}
+
+export { signUpSchema, signInSchema, signOutSchema, refreshTokenSchema }
