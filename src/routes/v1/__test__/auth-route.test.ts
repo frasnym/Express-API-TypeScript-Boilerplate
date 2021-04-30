@@ -331,9 +331,24 @@ describe('Auth Routes', () => {
         .expect(500)
     })
 
-    test.todo(
-      'should return 401 error if refresh token is not found in the database'
-    )
+    test('should return 500 error if refresh token is not found in the database', async () => {
+      const refreshTokenExpires = dateAdd(
+        new Date(),
+        'day',
+        envVars.jwt.refreshExpirationDays
+      )
+      const refreshToken = generateToken(
+        userOne.id,
+        refreshTokenExpires,
+        tokenTypes.REFRESH
+      )
+
+      await request(app)
+        .post('/v1/auth/refresh')
+        .send({ refreshToken })
+        .expect(500)
+    })
+
     test.todo('should return 401 error if refresh token is blacklisted')
     test.todo('should return 401 error if refresh token is expired')
     test.todo('should return 401 error if user is not found')
