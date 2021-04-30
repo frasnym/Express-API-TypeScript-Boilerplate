@@ -69,6 +69,16 @@ components:
             status: 'fail'
             message: 'Please authenticate'
             data: 'Please authenticate'
+    NotFound:
+      description: 'Not found'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            status: 'fail'
+            message: 'Not found'
+            data: 'Not found'
 
   securitySchemes:
     bearerAuth:

@@ -8,7 +8,7 @@ const router = Router()
 router.post('/signup', validate(signUpSchema), authController.signUp)
 router.post('/signin', validate(signInSchema), authController.signIn)
 router.post('/signout', validate(signOutSchema), authController.signOut)
-// TODO: SignOut Swagger
+// TODO: /refresh-tokens
 
 export { router as authRoute }
 
@@ -127,4 +127,31 @@ export { router as authRoute }
  *             example:
  *               code: 401
  *               message: Invalid email or password
+ */
+
+/**
+ * @swagger
+ * /auth/signout:
+ *   post:
+ *     summary: Sign Out an user
+ *     tags: [Auth]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - refreshToken
+ *             properties:
+ *               refreshToken:
+ *                 type: string
+ *                 description: Token from SignUp or SignIn
+ *             example:
+ *               refreshToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjcxLCJpYXQiOjE2MTk3NTI1NzcwMzMsImV4cCI6MTYyMjM0NDU3NzAzMSwidHlwZSI6InJlZnJlc2gifQ.sTkIdmfV9noCP6IYKcxU7WJPjYNyxYqR8tiEAjANk1E
+ *     responses:
+ *       "204":
+ *         description: Succesfully signed out
+ *       "404":
+ *         $ref: '#/components/responses/NotFound'
  */
