@@ -1,24 +1,22 @@
 import { Router } from 'express'
 import { authController } from '../../controllers'
 import { validate } from '../../middlewares/validate'
-import {
-  signUpSchema,
-  signInSchema,
-  signOutSchema,
-  refreshTokenSchema
-} from '../../validations'
+import * as authSchema from '../../validations'
 
 const router = Router()
 
-router.post('/signup', validate(signUpSchema), authController.signUp)
-router.post('/signin', validate(signInSchema), authController.signIn)
-router.post('/signout', validate(signOutSchema), authController.signOut)
+router.post('/signup', validate(authSchema.signUpSchema), authController.signUp)
+router.post('/signin', validate(authSchema.signInSchema), authController.signIn)
+router.post(
+  '/signout',
+  validate(authSchema.signOutSchema),
+  authController.signOut
+)
 router.post(
   '/refresh',
-  validate(refreshTokenSchema),
+  validate(authSchema.refreshTokenSchema),
   authController.refreshToken
 )
-// TODO: /refresh-tokens Swagger
 
 export { router as authRoute }
 
@@ -164,4 +162,31 @@ export { router as authRoute }
  *         description: Succesfully signed out
  *       "404":
  *         $ref: '#/components/responses/NotFound'
+ */
+
+/**
+ * @swagger
+ * /auth/refresh:
+ *   post:
+ *     summary: Refresh auth
+ *     tags: [Auth]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - refreshToken
+ *             properties:
+ *               refreshToken:
+ *                 type: string
+ *                 description: Token from SignUp or SignIn
+ *             example:
+ *               refreshToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjcxLCJpYXQiOjE2MTk3NTI1NzcwMzMsImV4cCI6MTYyMjM0NDU3NzAzMSwidHlwZSI6InJlZnJlc2gifQ.sTkIdmfV9noCP6IYKcxU7WJPjYNyxYqR8tiEAjANk1E
+ *     responses:
+ *       "200":
+ *         description: Succesfully refresh authorization
+ *       "401":
+ *         $ref: '#/components/responses/Unauthorized'
  */
