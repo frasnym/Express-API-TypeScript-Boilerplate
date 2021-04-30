@@ -82,7 +82,7 @@ describe('Auth Routes', () => {
 
     test('should return 400 error if phone is already used', async () => {
       await insertUsers([userOne])
-      newUser.email = userOne.phone
+      newUser.phone = userOne.phone
 
       await request(app).post('/v1/auth/signup').send(newUser).expect(400)
     })
