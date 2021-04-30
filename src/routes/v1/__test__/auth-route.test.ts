@@ -195,9 +195,10 @@ describe('Auth Routes', () => {
       expect(tokenDoc).toBeNull()
     })
 
-    test.todo(
-      'should return 400 error if refresh token is missing from request body'
-    )
+    test('should return 400 error if refresh token is missing from request body', async () => {
+      await request(app).post('/v1/auth/signout').expect(400)
+    })
+
     test.todo(
       'should return 404 error if refresh token is not found in the database'
     )
