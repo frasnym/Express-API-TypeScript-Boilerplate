@@ -224,6 +224,29 @@ describe('Auth Routes', () => {
         .expect(404)
     })
 
-    test.todo('should return 404 error if refresh token is blacklisted')
+    test('should return 404 error if refresh token is blacklisted', async () => {
+      await insertUsers([userOne])
+
+      const signInCredentials = {
+        email: userOne.email,
+        password: userOne.password
+      }
+      const signInResponse = await request(app)
+        .post('/v1/auth/signin')
+        .send(signInCredentials)
+        .expect(200)
+
+      const refreshToken = signInResponse.body.data.tokens.refresh.token
+
+      await Token.update(
+        { blacklisted: true },
+        { where: { token: refreshToken } }
+      )
+
+      await request(app)
+        .post('/v1/auth/signout')
+        .send({ refreshToken })
+        .expect(404)
+    })
   })
 })
