@@ -349,7 +349,32 @@ describe('Auth Routes', () => {
         .expect(500)
     })
 
-    test.todo('should return 401 error if refresh token is blacklisted')
+    test('should return 500 error if refresh token is blacklisted', async () => {
+      await insertUsers([userOne])
+      const refreshTokenExpires = dateAdd(
+        new Date(),
+        'day',
+        envVars.jwt.refreshExpirationDays
+      )
+      const refreshToken = generateToken(
+        userOne.id,
+        refreshTokenExpires,
+        tokenTypes.REFRESH
+      )
+      await saveToken(
+        refreshToken,
+        userOne.id,
+        refreshTokenExpires,
+        TokenType.refresh,
+        true
+      )
+
+      await request(app)
+        .post('/v1/auth/refresh')
+        .send({ refreshToken })
+        .expect(500)
+    })
+
     test.todo('should return 401 error if refresh token is expired')
     test.todo('should return 401 error if user is not found')
   })
