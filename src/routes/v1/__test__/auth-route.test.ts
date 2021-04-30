@@ -2,7 +2,11 @@ import request from 'supertest'
 import { insertUsers, userOne } from '../../../../tests/fixtures/user-fixture'
 import app from '../../../app'
 import { Token, User } from '../../../config/db'
-import { UserAttributes } from '../../../types/rest-api'
+import envVars from '../../../config/envVars'
+import { tokenTypes } from '../../../config/tokens'
+import { generateToken, saveToken } from '../../../services/token-service'
+import { TokenType, UserAttributes } from '../../../types/rest-api'
+import { dateAdd } from '../../../utils/date'
 
 describe('Auth Routes', () => {
   describe('POST /v1/auth/signup', () => {
@@ -248,5 +252,62 @@ describe('Auth Routes', () => {
         .send({ refreshToken })
         .expect(404)
     })
+  })
+
+  describe('POST /v1/auth/refresh', () => {
+    test('should return 200 and new auth tokens if refresh token is valid', async () => {
+      await insertUsers([userOne])
+      const refreshTokenExpires = dateAdd(
+        new Date(),
+        'day',
+        envVars.jwt.refreshExpirationDays
+      )
+      const refreshToken = generateToken(
+        userOne.id,
+        refreshTokenExpires,
+        tokenTypes.REFRESH
+      )
+      await saveToken(
+        refreshToken,
+        userOne.id,
+        refreshTokenExpires,
+        TokenType.refresh
+      )
+
+      const res = await request(app)
+        .post('/v1/auth/refresh')
+        .send({ refreshToken })
+        .expect(200)
+
+      expect(res.body.data).toEqual({
+        access: { token: expect.anything(), expires: expect.anything() },
+        refresh: { token: expect.anything(), expires: expect.anything() }
+      })
+
+      const dbRefreshTokenDoc = await Token.findByPk(
+        res.body.data.refresh.token
+      )
+      expect(dbRefreshTokenDoc).toMatchObject({
+        type: tokenTypes.REFRESH,
+        userId: userOne.id,
+        blacklisted: false
+      })
+
+      const dbRefreshTokenCount = await Token.count()
+      expect(dbRefreshTokenCount).toBe(1)
+    })
+
+    test.todo(
+      'should return 400 error if refresh token is missing from request body'
+    )
+    test.todo(
+      'should return 401 error if refresh token is signed using an invalid secret'
+    )
+    test.todo(
+      'should return 401 error if refresh token is not found in the database'
+    )
+    test.todo('should return 401 error if refresh token is blacklisted')
+    test.todo('should return 401 error if refresh token is expired')
+    test.todo('should return 401 error if user is not found')
   })
 })
