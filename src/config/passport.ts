@@ -7,6 +7,7 @@ import {
 import { tokenTypes } from './tokens'
 import envVars from './envVars'
 import { JWTPayload } from '../types/rest-api'
+import { User } from './db'
 
 const jwtOptions: StrategyOptions = {
   secretOrKey: envVars.jwt.secret,
@@ -19,13 +20,9 @@ const jwtVerify: VerifyCallback = async (payload: JWTPayload, done) => {
       throw new Error('Invalid token type')
     }
 
-    // TODO: Check user on DB
-    // const user = await User.findById(payload.sub);
-    // if (!user) {
-    //   return done(null, false);
-    // }
-    const user = {
-      name: 'Dummy user'
+    const user = await User.findByPk(payload.sub, { raw: true })
+    if (!user) {
+      return done(null, false)
     }
 
     done(null, user)

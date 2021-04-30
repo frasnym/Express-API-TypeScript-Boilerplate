@@ -1,5 +1,5 @@
 import * as sequelize from 'sequelize'
-import { UserFactory } from '../models/user-model'
+import { TokenFactory, UserFactory } from '../models'
 import envVars from './envVars'
 
 let dbConfig: sequelize.Sequelize
@@ -24,3 +24,6 @@ if (envVars.env === 'test') {
 export { dbConfig }
 
 export const User = UserFactory(dbConfig)
+export const Token = TokenFactory(dbConfig)
+
+Token.belongsTo(User, { foreignKey: 'userId', targetKey: 'id' })

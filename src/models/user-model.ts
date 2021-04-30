@@ -1,58 +1,46 @@
 import { DataTypes, Op, Sequelize } from 'sequelize'
 import bcrypt from 'bcryptjs'
-import { UserStatic } from '../types/rest-api'
+import { UserAttributes, UserModel, UserStatic } from '../types/rest-api'
 
 export function UserFactory(sequelize: Sequelize): UserStatic {
-  const User = <UserStatic>sequelize.define(
-    'users',
-    {
-      id: {
-        type: DataTypes.INTEGER,
-        autoIncrement: true,
-        primaryKey: true
-      },
-      email: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        unique: true
-      },
-      name: {
-        type: DataTypes.STRING,
-        allowNull: false
-      },
-      phone: {
-        type: DataTypes.STRING,
-        allowNull: false
-      },
-      pin: {
-        type: DataTypes.STRING,
-        allowNull: false
-      },
-      password: {
-        type: DataTypes.STRING,
-        allowNull: false
-      },
-      createdAt: {
-        type: DataTypes.DATE,
-        allowNull: false,
-        defaultValue: DataTypes.NOW
-      },
-      updatedAt: {
-        type: DataTypes.DATE,
-        allowNull: false,
-        defaultValue: DataTypes.NOW
-      }
+  const User = <UserStatic>sequelize.define('users', {
+    id: {
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
+      primaryKey: true
     },
-    {
-      scopes: {
-        withoutCredentials: {
-          attributes: {
-            exclude: ['password', 'pin']
-          }
-        }
-      }
+    email: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      unique: true
+    },
+    name: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    phone: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    pin: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    password: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    createdAt: {
+      type: DataTypes.DATE,
+      allowNull: false,
+      defaultValue: DataTypes.NOW
+    },
+    updatedAt: {
+      type: DataTypes.DATE,
+      allowNull: false,
+      defaultValue: DataTypes.NOW
     }
-  )
+  })
 
   User.beforeCreate(async (user, _options) => {
     if (user.changed('password')) {
@@ -85,5 +73,44 @@ export function UserFactory(sequelize: Sequelize): UserStatic {
 
     return !!user
   }
+
+  User.isPhoneTaken = async (
+    phone: string,
+    excludeUserId?: number | undefined
+  ) => {
+    const options = excludeUserId
+      ? {
+          id: {
+            [Op.ne]: excludeUserId
+          }
+        }
+      : {}
+
+    const user = await User.findOne({
+      where: {
+        phone,
+        ...options
+      }
+    })
+
+    return !!user
+  }
+
+  User.prototype.isPasswordMatch = function (password: string) {
+    return bcrypt.compareSync(password, this.password)
+  }
+
+  User.prototype.withoutCredentials = function () {
+    const userDoc: UserModel = this
+    const user: Partial<UserAttributes> = userDoc.toJSON()
+
+    delete user.password
+    delete user.pin
+    delete user.createdAt
+    delete user.updatedAt
+
+    return user
+  }
+
   return User
 }

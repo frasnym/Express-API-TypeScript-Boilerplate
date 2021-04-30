@@ -17,7 +17,6 @@ components:
         phone: '6281999200555'
         email: 'fake@example.com'
         name: 'fake name'
-        role: 'user'
 
     Token:
       type: object
@@ -70,6 +69,16 @@ components:
             status: 'fail'
             message: 'Please authenticate'
             data: 'Please authenticate'
+    NotFound:
+      description: 'Not found'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            status: 'fail'
+            message: 'Not found'
+            data: 'Not found'
 
   securitySchemes:
     bearerAuth:

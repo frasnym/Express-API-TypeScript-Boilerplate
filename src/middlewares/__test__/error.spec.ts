@@ -2,9 +2,77 @@ import httpMocks from 'node-mocks-http'
 import envVars from '../../config/envVars'
 import { logger } from '../../config/logger'
 import { ErrorResponse, FailResponse } from '../../utils/jsend'
-import { errorHandler } from '../error'
+import { errorConverter, errorHandler } from '../error'
 
 describe('Error Middleware', () => {
+  describe('ErrorConverter', () => {
+    beforeEach(() => {
+      console.error = jest.fn()
+    })
+
+    test('should return the same JSend Error object it was called with', () => {
+      const failNext = jest.fn()
+      const failResponse = new FailResponse(400, 'Any error', 'Any data')
+      errorConverter(
+        failResponse,
+        httpMocks.createRequest(),
+        httpMocks.createResponse(),
+        failNext
+      )
+      expect(failNext).toHaveBeenCalledWith(failResponse)
+
+      const errorNext = jest.fn()
+      const errorResponse = new ErrorResponse(500)
+      errorConverter(
+        errorResponse,
+        httpMocks.createRequest(),
+        httpMocks.createResponse(),
+        errorNext
+      )
+      expect(errorNext).toHaveBeenCalledWith(errorResponse)
+    })
+
+    test('should convert an Error to ErrorResponse and preserve its message', () => {
+      const error = new Error('Any error')
+      const next = jest.fn()
+
+      errorConverter(
+        error,
+        httpMocks.createRequest(),
+        httpMocks.createResponse(),
+        next
+      )
+
+      expect(next).toHaveBeenCalledWith(expect.any(ErrorResponse))
+      expect(next).toHaveBeenCalledWith(
+        expect.objectContaining({
+          message: error.message,
+          code: 'ECV'
+        })
+      )
+    })
+
+    test('should convert an Error without message to ErrorResponse with default message', () => {
+      const error = new Error()
+      const next = jest.fn()
+
+      errorConverter(
+        error,
+        httpMocks.createRequest(),
+        httpMocks.createResponse(),
+        next
+      )
+
+      expect(next).toHaveBeenCalledWith(expect.any(ErrorResponse))
+      expect(next).toHaveBeenCalledWith(
+        expect.objectContaining({
+          message: 'Internal Server Error',
+          code: 'ECV'
+        })
+      )
+    })
+  })
+
   describe('ErrorHandler', () => {
     beforeEach(() => {
       // @ts-ignore

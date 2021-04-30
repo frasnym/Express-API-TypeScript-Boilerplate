@@ -2,6 +2,7 @@ import envVars from '../../src/config/envVars'
 import { generateToken } from '../../src/services/token-service'
 import { dateAdd } from '../../src/utils/date'
 import { tokenTypes } from '../../src/config/tokens'
+import { userOne } from './user-fixture'
 
 const NOW = new Date()
 const accessTokenExpires = dateAdd(
@@ -9,10 +10,10 @@ const accessTokenExpires = dateAdd(
   'minute',
   envVars.jwt.accessExpirationMinutes
 )
-const accessToken = generateToken(
-  Math.random(),
+const useOneAccessToken = generateToken(
+  userOne.id,
   accessTokenExpires,
   tokenTypes.ACCESS
 )
 
-export { accessToken }
+export { useOneAccessToken }

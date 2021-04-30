@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { BuildOptions, Model } from 'sequelize'
 
 /**
@@ -13,7 +14,10 @@ export interface UserAttributes {
   createdAt?: Date
   updatedAt?: Date
 }
-export interface UserModel extends Model<UserAttributes>, UserAttributes {}
+export interface UserModel extends Model<UserAttributes>, UserAttributes {
+  isPasswordMatch(password: string): boolean
+  withoutCredentials(): Partial<UserAttributes>
+}
 export class User extends Model<UserModel, UserAttributes> {}
 export type UserStatic = typeof Model & {
   new (values?: object, options?: BuildOptions): UserModel
@@ -21,6 +25,39 @@ export type UserStatic = typeof Model & {
     email: string,
     excludeUserId?: number | undefined
   ): Promise<boolean>
+  isPhoneTaken(
+    phone: string,
+    excludeUserId?: number | undefined
+  ): Promise<boolean>
+}
+
+/**
+ * Token's type enum
+ * Used for declaring "type" on TokenAttributes
+ */
+export const enum TokenType {
+  access = 'access',
+  refresh = 'refresh',
+  resetPassword = 'resetPassword',
+  verifyEmail = 'verifyEmail'
+}
+
+/**
+ * Define how token model should looks like
+ */
+export interface TokenAttributes {
+  token: string
+  userId: number
+  type: TokenType
+  expires: Date
+  blacklisted: boolean
+  createdAt?: Date
+  updatedAt?: Date
+}
+export interface TokenModel extends Model<TokenAttributes>, TokenAttributes {}
+export class Token extends Model<TokenModel, TokenAttributes> {}
+export type TokenStatic = typeof Model & {
+  new (values?: object, options?: BuildOptions): TokenModel
 }
 
 /**
