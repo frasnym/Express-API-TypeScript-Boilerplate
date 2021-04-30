@@ -10,8 +10,7 @@ export function TokenFactory(sequelize: Sequelize): TokenStatic {
     },
     userId: {
       type: DataTypes.INTEGER,
-      allowNull: false,
-      unique: true
+      allowNull: false
     },
     type: {
       type: DataTypes.ENUM('access', 'refresh', 'resetPassword', 'verifyEmail'),
