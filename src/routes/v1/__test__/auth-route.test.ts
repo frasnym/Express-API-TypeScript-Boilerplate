@@ -297,9 +297,10 @@ describe('Auth Routes', () => {
       expect(dbRefreshTokenCount).toBe(1)
     })
 
-    test.todo(
-      'should return 400 error if refresh token is missing from request body'
-    )
+    test('should return 400 error if refresh token is missing from request body', async () => {
+      await request(app).post('/v1/auth/refresh').expect(400)
+    })
+
     test.todo(
       'should return 401 error if refresh token is signed using an invalid secret'
     )
