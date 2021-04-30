@@ -33,7 +33,7 @@ const signInUserWithEmailAndPassword = async (
 ) => {
   const user = await userService.getUserByEmail(email)
   if (!user || !user.isPasswordMatch(password)) {
-    throw new FailResponse(400, 'Incorrect email or password', {
+    throw new FailResponse(401, 'Incorrect email or password', {
       signin: 'Incorrect email or password'
     })
   }

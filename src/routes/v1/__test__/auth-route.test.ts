@@ -140,7 +140,20 @@ describe('Auth Routes', () => {
         new Date().getTime()
       )
     })
-    test.todo('should return 401 error if there are no users with that email')
+
+    test('should return 401 error if there are no users with that email', async () => {
+      const signInCredentials = {
+        email: userOne.email,
+        password: userOne.password
+      }
+      const res = await request(app)
+        .post('/v1/auth/signin')
+        .send(signInCredentials)
+        .expect(401)
+
+      expect(res.body.data.user).toBeUndefined()
+      expect(res.body.data.tokens).toBeUndefined()
+    })
     test.todo('should return 401 error if password is wrong')
   })
 })
