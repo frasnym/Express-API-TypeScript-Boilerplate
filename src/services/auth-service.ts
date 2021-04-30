@@ -34,9 +34,11 @@ const signInUserWithEmailAndPassword = async (
 ) => {
   const user = await userService.getUserByEmail(email)
   if (!user || !user.isPasswordMatch(password)) {
-    throw new FailResponse(401, 'Incorrect email or password', {
-      signin: 'Incorrect email or password'
-    })
+    throw new FailResponse(
+      401,
+      'Incorrect email or password',
+      'Incorrect email or password'
+    )
   }
   return user
 }
@@ -54,9 +56,7 @@ const signOut = async (refreshToken: string) => {
     }
   })
   if (!refreshTokenDoc) {
-    throw new FailResponse(404, 'Token not found', {
-      refreshToken: 'not found'
-    })
+    throw new FailResponse(404, 'Token not found', 'Token not found')
   }
 
   await refreshTokenDoc?.destroy()
