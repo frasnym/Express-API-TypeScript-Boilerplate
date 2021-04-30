@@ -107,7 +107,7 @@ const generateAuthTokens = async (
  * Verify token and return token doc (or throw an error if it is not valid)
  */
 const verifyToken = async (token: string, type: TokenType) => {
-  const payload = jwt.verify(token, envVars.jwt.secret) as { sub: number }
+  const payload = jwt.verify(token, envVars.jwt.secret) as JWTPayload
 
   const tokenDoc = await Token.findOne({
     where: { token, type, userId: payload.sub, blacklisted: false }
