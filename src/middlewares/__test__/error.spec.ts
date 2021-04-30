@@ -27,6 +27,25 @@ describe('Error Middleware', () => {
       )
       expect(errorNext).toHaveBeenCalledWith(errorResponse)
     })
+
+    test('should convert any Error to ErrorResponse and preserve its message', () => {
+      const error = new Error('Any error')
+      const next = jest.fn()
+
+      errorConverter(
+        error,
+        httpMocks.createRequest(),
+        httpMocks.createResponse(),
+        next
+      )
+
+      expect(next).toHaveBeenCalledWith(expect.any(ErrorResponse))
+      expect(next).toHaveBeenCalledWith(
+        expect.objectContaining({
+          message: error.message
+        })
+      )
+    })
   })
 
   describe('ErrorHandler', () => {
