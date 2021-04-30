@@ -1,14 +1,12 @@
 import { userService } from '.'
 import { User } from '../config/db'
-import { UserAttributes } from '../types/rest-api'
+import { UserAttributes, UserModel } from '../types/rest-api'
 import { FailResponse } from '../utils/jsend'
 
 /**
  * Create a user
  */
-const createUser = async (
-  userBody: UserAttributes
-): Promise<Partial<UserAttributes>> => {
+const createUser = async (userBody: UserAttributes): Promise<UserModel> => {
   const isEmailTaken = await User.isEmailTaken(userBody.email)
   if (isEmailTaken) {
     throw new FailResponse(400, 'Email already registered', {
@@ -23,14 +21,7 @@ const createUser = async (
     })
   }
 
-  const createdUser = await User.scope('withoutCredentials').create(userBody)
-
-  return {
-    id: createdUser.id,
-    email: createdUser.email,
-    name: createdUser.name,
-    phone: createdUser.phone
-  }
+  return await User.create(userBody)
 }
 
 /**

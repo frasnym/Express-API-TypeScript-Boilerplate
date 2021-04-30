@@ -6,9 +6,12 @@ const signUp = catchAsync(async (req, res) => {
   const user = await authService.createUser(req.body)
   const tokens = await tokenService.generateAuthTokens(user)
 
-  res
-    .status(201)
-    .send(new SuccessResponse({ user, tokens }).serializeResponse())
+  res.status(201).send(
+    new SuccessResponse({
+      user: user.withoutCredentials(),
+      tokens
+    }).serializeResponse()
+  )
 })
 
 const signIn = catchAsync(async (req, res) => {
