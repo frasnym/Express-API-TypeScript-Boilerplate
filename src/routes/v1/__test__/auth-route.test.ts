@@ -375,7 +375,28 @@ describe('Auth Routes', () => {
         .expect(500)
     })
 
-    test.todo('should return 401 error if refresh token is expired')
+    test('should return 500 error if refresh token is expired', async () => {
+      await insertUsers([userOne])
+      const NOW = new Date()
+      const refreshTokenExpires = dateAdd(NOW, 'minute', -1)
+      const refreshToken = generateToken(
+        userOne.id,
+        refreshTokenExpires,
+        tokenTypes.REFRESH
+      )
+      await saveToken(
+        refreshToken,
+        userOne.id,
+        refreshTokenExpires,
+        TokenType.refresh
+      )
+
+      await request(app)
+        .post('/v1/auth/refresh')
+        .send({ refreshToken })
+        .expect(500)
+    })
+
     test.todo('should return 401 error if user is not found')
   })
 })

@@ -26,8 +26,8 @@ const generateToken = (userId: number, expires: Date, type: string): string => {
 
   const payload: JWTPayload = {
     sub: userId,
-    iat: new Date().getTime(),
-    exp: expires.getTime(),
+    iat: new Date().getTime() / 1000,
+    exp: expires.getTime() / 1000,
     type
   }
   return jwt.sign(payload, envVars.jwt.secret)
