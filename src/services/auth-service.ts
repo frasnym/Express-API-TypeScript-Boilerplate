@@ -10,16 +10,12 @@ import { ErrorResponse, FailResponse } from '../utils/jsend'
 const createUser = async (userBody: UserAttributes): Promise<UserModel> => {
   const isEmailTaken = await User.isEmailTaken(userBody.email)
   if (isEmailTaken) {
-    throw new FailResponse(400, 'Email already registered', {
-      email: 'Email already registered'
-    })
+    throw new FailResponse(400, 'Email already registered')
   }
 
   const isPhoneTaken = await User.isPhoneTaken(userBody.phone)
   if (isPhoneTaken) {
-    throw new FailResponse(400, 'Phone already registered', {
-      phone: 'Phone already registered'
-    })
+    throw new FailResponse(400, 'Phone already registered')
   }
 
   return await User.create(userBody)
@@ -34,11 +30,7 @@ const signInUserWithEmailAndPassword = async (
 ) => {
   const user = await userService.getUserByEmail(email)
   if (!user || !user.isPasswordMatch(password)) {
-    throw new FailResponse(
-      401,
-      'Incorrect email or password',
-      'Incorrect email or password'
-    )
+    throw new FailResponse(401, 'Incorrect email or password')
   }
   return user
 }
@@ -56,7 +48,7 @@ const signOut = async (refreshToken: string) => {
     }
   })
   if (!refreshTokenDoc) {
-    throw new FailResponse(404, 'Token not found', 'Token not found')
+    throw new FailResponse(404, 'Token not found')
   }
 
   await refreshTokenDoc?.destroy()

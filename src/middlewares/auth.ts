@@ -10,9 +10,7 @@ const verifyCallback = (
   reject: (reason?: any) => void
 ) => async (err: Error, user: Partial<UserAttributes>) => {
   if (err || !user) {
-    return reject(
-      new FailResponse(401, 'Please authenticate', 'Please authenticate')
-    )
+    return reject(new FailResponse(401, 'Please authenticate'))
   }
   req.user = user
 
