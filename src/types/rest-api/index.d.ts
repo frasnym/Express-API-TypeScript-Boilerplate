@@ -31,6 +31,12 @@ export type UserStatic = typeof Model & {
   ): Promise<boolean>
 }
 
+declare global {
+  namespace Express {
+    interface User extends UserAttributes {}
+  }
+}
+
 /**
  * Token's type enum
  * Used for declaring "type" on TokenAttributes
@@ -91,6 +97,11 @@ export interface EnvVars {
   POSTGRES_DB: string
   POSTGRES_PORT: number
   POSTGRES_HOST: string
+  SMTP_HOST: string
+  SMTP_PORT: number
+  SMTP_USERNAME: string
+  SMTP_PASSWORD: string
+  EMAIL_FROM: string
 }
 
 /**

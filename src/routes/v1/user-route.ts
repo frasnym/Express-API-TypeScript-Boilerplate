@@ -5,7 +5,8 @@ import { auth } from '../../middlewares/auth'
 const router = Router()
 
 router.get('/', auth(), userController.getUser)
-// TODO: Request verification
+router.get('/verify/:type', auth(), userController.requestVerification)
+// TODO: Request verification swagger
 // TODO: Send verification
 // TODO: Forgot password
 // TODO: Change password
