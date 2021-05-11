@@ -1,6 +1,6 @@
 import bcrypt from 'bcryptjs'
 import { User } from '../../src/config/db'
-import { UserAttributes } from '../../src/types/rest-api'
+import { UserAttributes } from '../../src/types/model'
 
 const password = 'password1'
 const salt = bcrypt.genSaltSync(8)

@@ -1,5 +1,5 @@
 import { emailService, tokenService } from '../services'
-import { UserAttributes } from '../types/rest-api'
+import { UserAttributes } from '../types/model'
 import { catchAsync } from '../utils/catch-async'
 import { FailResponse, SuccessResponse } from '../utils/jsend'
 

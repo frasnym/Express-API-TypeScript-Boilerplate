@@ -1,12 +1,8 @@
 import jwt from 'jsonwebtoken'
 import { Token } from '../config/db'
 import envVars from '../config/envVars'
-import {
-  AuthToken,
-  JWTPayload,
-  TokenType,
-  UserAttributes
-} from '../types/rest-api'
+import { UserAttributes } from '../types/model'
+import { AuthToken, JWTPayload, TokenType } from '../types/rest-api'
 import { dateAdd } from '../utils/date'
 import { ErrorResponse } from '../utils/jsend'
 

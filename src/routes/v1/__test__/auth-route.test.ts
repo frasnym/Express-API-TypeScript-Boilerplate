@@ -5,7 +5,8 @@ import app from '../../../app'
 import { Token, User } from '../../../config/db'
 import envVars from '../../../config/envVars'
 import { generateToken, saveToken } from '../../../services/token-service'
-import { JWTPayload, TokenType, UserAttributes } from '../../../types/rest-api'
+import { JWTPayload, TokenType } from '../../../types/rest-api'
+import { UserAttributes } from '../../../types/model'
 import { dateAdd } from '../../../utils/date'
 
 describe('Auth Routes', () => {

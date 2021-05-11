@@ -1,6 +1,6 @@
 import { DataTypes, Op, Sequelize } from 'sequelize'
 import bcrypt from 'bcryptjs'
-import { UserAttributes, UserModel, UserStatic } from '../types/rest-api'
+import { UserAttributes, UserModel, UserStatic } from '../types/model'
 
 export function UserFactory(sequelize: Sequelize): UserStatic {
   const User = <UserStatic>sequelize.define('users', {

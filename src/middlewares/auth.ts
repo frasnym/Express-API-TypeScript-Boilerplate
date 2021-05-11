@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express'
 
 import passport from 'passport'
-import { UserAttributes } from '../types/rest-api'
+import { UserAttributes } from '../types/model'
 import { FailResponse } from '../utils/jsend'
 
 const verifyCallback = (

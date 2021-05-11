@@ -1,6 +1,7 @@
 import { tokenService, userService } from '.'
 import { Token, User } from '../config/db'
-import { TokenType, UserAttributes, UserModel } from '../types/rest-api'
+import { UserAttributes, UserModel } from '../types/model'
+import { TokenType } from '../types/rest-api'
 import { ErrorResponse, FailResponse } from '../utils/jsend'
 
 /**
