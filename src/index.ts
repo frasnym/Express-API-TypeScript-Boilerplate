@@ -3,16 +3,28 @@ import app from './app'
 import { logger } from './config/logger'
 import envVars from './config/envVars'
 import { dbConfig } from './config/db'
+import { transport } from './config/transport'
 
 const PORT = envVars.port
 
 let server: Server
-dbConfig.sync().then(() => {
-  logger.info('Sequelize: All models were synchronized successfully')
-  server = app.listen(PORT, () => {
-    logger.info(`Application is up and running on port ${PORT}`)
+dbConfig
+  .sync()
+  .then(() =>
+    logger.info('[Sequelize] All models were synchronized successfully')
+  )
+  .then(() => {
+    if (envVars.env !== 'test') {
+      transport.verify()
+    }
   })
-})
+  .then(() => logger.info('[Nodemailer] Connected to email server'))
+  .then(() => {
+    server = app.listen(PORT, () => {
+      logger.info(`Application is up and running on port ${PORT}`)
+    })
+  })
+  .catch((e: Error) => logger.error(`Failed to initialize app: ${e.message}`))
 
 const exitHandler = () => {
   if (server) {
