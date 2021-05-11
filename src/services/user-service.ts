@@ -1,5 +1,5 @@
 import { User } from '../config/db'
-import { UserModel } from '../types/rest-api'
+import { UserModel } from '../types/model'
 
 /**
  * Get user by email
