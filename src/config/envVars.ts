@@ -6,6 +6,7 @@ import { EnvVars } from '../types/rest-api'
 dotenv.config({ path: path.join(__dirname, '../../.env') })
 
 const envVarsSchema = Joi.object({
+  TZ: Joi.string().default('Asia/Makassar'),
   NODE_ENV: Joi.string().valid('production', 'development', 'test').required(),
   PORT: Joi.number().default(3000),
   JWT_SECRET: Joi.string().required().description('JWT secret key'),
@@ -43,6 +44,7 @@ if (error) {
 const envVars: EnvVars = value
 
 export default {
+  timezone: envVars.TZ,
   env: envVars.NODE_ENV,
   port: envVars.PORT,
   jwt: {
