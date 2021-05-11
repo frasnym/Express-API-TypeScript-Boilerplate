@@ -10,14 +10,8 @@ const PORT = envVars.port
 let server: Server
 dbConfig
   .sync()
-  .then(() =>
-    logger.info('[Sequelize] All models were synchronized successfully')
-  )
-  .then(() => {
-    if (envVars.env !== 'test') {
-      transport.verify()
-    }
-  })
+  .then(() => logger.info('[Sequelize] All models were synchronized'))
+  .then(() => transport.verify())
   .then(() => logger.info('[Nodemailer] Connected to email server'))
   .then(() => {
     server = app.listen(PORT, () => {
