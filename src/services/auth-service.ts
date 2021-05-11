@@ -1,6 +1,5 @@
 import { tokenService, userService } from '.'
 import { Token, User } from '../config/db'
-import { tokenTypes } from '../config/tokens'
 import { TokenType, UserAttributes, UserModel } from '../types/rest-api'
 import { ErrorResponse, FailResponse } from '../utils/jsend'
 
@@ -43,7 +42,7 @@ const signOut = async (refreshToken: string) => {
   const refreshTokenDoc = await Token.findOne({
     where: {
       token: refreshToken,
-      type: tokenTypes.REFRESH,
+      type: TokenType.refresh,
       blacklisted: false
     }
   })
@@ -58,7 +57,7 @@ const refreshAuth = async (refreshToken: string) => {
   try {
     const refreshTokenDoc = await tokenService.verifyToken(
       refreshToken,
-      tokenTypes.REFRESH as TokenType
+      TokenType.refresh
     )
 
     const user = await userService.getUserById(refreshTokenDoc.userId)

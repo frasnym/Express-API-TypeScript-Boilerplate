@@ -1,8 +1,8 @@
 import envVars from '../../src/config/envVars'
 import { generateToken } from '../../src/services/token-service'
 import { dateAdd } from '../../src/utils/date'
-import { tokenTypes } from '../../src/config/tokens'
 import { userOne } from './user-fixture'
+import { TokenType } from '../../src/types/rest-api'
 
 const NOW = new Date()
 const accessTokenExpires = dateAdd(
@@ -13,7 +13,7 @@ const accessTokenExpires = dateAdd(
 const useOneAccessToken = generateToken(
   userOne.id,
   accessTokenExpires,
-  tokenTypes.ACCESS
+  TokenType.access
 )
 
 export { useOneAccessToken }

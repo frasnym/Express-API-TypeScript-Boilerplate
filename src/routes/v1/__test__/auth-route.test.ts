@@ -4,7 +4,6 @@ import { insertUsers, userOne } from '../../../../tests/fixtures/user-fixture'
 import app from '../../../app'
 import { Token, User } from '../../../config/db'
 import envVars from '../../../config/envVars'
-import { tokenTypes } from '../../../config/tokens'
 import { generateToken, saveToken } from '../../../services/token-service'
 import { JWTPayload, TokenType, UserAttributes } from '../../../types/rest-api'
 import { dateAdd } from '../../../utils/date'
@@ -266,7 +265,7 @@ describe('Auth Routes', () => {
       const refreshToken = generateToken(
         userOne.id,
         refreshTokenExpires,
-        tokenTypes.REFRESH
+        TokenType.refresh
       )
       await saveToken(
         refreshToken,
@@ -289,7 +288,7 @@ describe('Auth Routes', () => {
         res.body.data.refresh.token
       )
       expect(dbRefreshTokenDoc).toMatchObject({
-        type: tokenTypes.REFRESH,
+        type: TokenType.refresh,
         userId: userOne.id,
         blacklisted: false
       })
@@ -314,7 +313,7 @@ describe('Auth Routes', () => {
         sub: userOne.id,
         iat: new Date().getTime(),
         exp: refreshTokenExpires.getTime(),
-        type: tokenTypes.REFRESH
+        type: TokenType.refresh
       }
       const refreshToken = jwt.sign(payload, 'invalidJWTSecret')
 
@@ -340,7 +339,7 @@ describe('Auth Routes', () => {
       const refreshToken = generateToken(
         userOne.id,
         refreshTokenExpires,
-        tokenTypes.REFRESH
+        TokenType.refresh
       )
 
       await request(app)
@@ -359,7 +358,7 @@ describe('Auth Routes', () => {
       const refreshToken = generateToken(
         userOne.id,
         refreshTokenExpires,
-        tokenTypes.REFRESH
+        TokenType.refresh
       )
       await saveToken(
         refreshToken,
@@ -381,7 +380,7 @@ describe('Auth Routes', () => {
       const refreshToken = generateToken(
         userOne.id,
         refreshTokenExpires,
-        tokenTypes.REFRESH
+        TokenType.refresh
       )
       await saveToken(
         refreshToken,
