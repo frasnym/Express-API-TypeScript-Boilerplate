@@ -1,4 +1,4 @@
-FROM node:14.16.0-alpine3.10
+FROM node:14-alpine3.13
 RUN mkdir -p /usr/src/node-app
 
 # Set Timezone

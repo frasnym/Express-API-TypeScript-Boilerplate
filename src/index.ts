@@ -1,9 +1,9 @@
-import { Server } from 'node:http'
 import app from './app'
 import { logger } from './config/logger'
 import envVars from './config/envVars'
 import { dbConfig } from './config/db'
 import { transport } from './config/transport'
+import { Server } from 'http'
 
 const PORT = envVars.port
 
