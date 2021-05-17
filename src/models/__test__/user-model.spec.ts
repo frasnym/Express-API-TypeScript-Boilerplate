@@ -38,4 +38,20 @@ describe('User model', () => {
       expect(await User.isEmailTaken(userOne.email, userOne.id)).toBe(false)
     })
   })
+
+  describe('isPhoneTaken', () => {
+    test('should return true if phone is taken', async () => {
+      await insertUsers([userOne])
+      expect(await User.isPhoneTaken(userOne.phone)).toBe(true)
+    })
+
+    test('should return false if phone is not taken', async () => {
+      expect(await User.isPhoneTaken(userOne.phone)).toBe(false)
+    })
+
+    test('should return false if phone is taken and id is excluded', async () => {
+      await insertUsers([userOne])
+      expect(await User.isPhoneTaken(userOne.phone, userOne.id)).toBe(false)
+    })
+  })
 })
