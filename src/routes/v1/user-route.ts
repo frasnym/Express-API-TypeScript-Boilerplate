@@ -6,7 +6,6 @@ const router = Router()
 
 router.get('/', auth(), userController.getUser)
 router.get('/verify/:type', auth(), userController.requestVerification)
-// TODO: Request verification swagger
 // TODO: Send verification
 // TODO: Forgot password
 // TODO: Change password
@@ -39,6 +38,31 @@ export { router as userRoute }
  *               properties:
  *                 user:
  *                   $ref: '#/components/schemas/User'
+ *       "401":
+ *         $ref: '#/components/responses/Unauthorized'
+ */
+
+/**
+ * @swagger
+ * /users/verify/{type}:
+ *   get:
+ *     summary: Send verification email
+ *     description: An email will be sent to verify email.
+ *     tags: [Users]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *      - in: path
+ *        name: type
+ *        schema:
+ *          type: string
+ *          enum: [email, phone]
+ *        required: true
+ *        description: Type of verification.
+ *        example: email
+ *     responses:
+ *       "204":
+ *         description: No content
  *       "401":
  *         $ref: '#/components/responses/Unauthorized'
  */
