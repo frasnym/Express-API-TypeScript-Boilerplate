@@ -32,5 +32,10 @@ describe('User model', () => {
     test('should return false if email is not taken', async () => {
       expect(await User.isEmailTaken(userOne.email)).toBe(false)
     })
+
+    test('should return false if email is taken and id is excluded', async () => {
+      await insertUsers([userOne])
+      expect(await User.isEmailTaken(userOne.email, userOne.id)).toBe(false)
+    })
   })
 })
