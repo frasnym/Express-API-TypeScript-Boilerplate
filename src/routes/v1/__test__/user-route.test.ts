@@ -115,6 +115,10 @@ describe('User routes', () => {
         })
         expect(dbVerifyEmailToken).toBe(0)
       })
+
+      test('should return 400 if verify email token is missing', async () => {
+        await request(app).post('/v1/users/verify/email').send().expect(400)
+      })
     })
   })
 })
