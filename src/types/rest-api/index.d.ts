@@ -45,11 +45,7 @@ export interface EnvVars {
   JWT_REFRESH_EXPIRATION_DAYS: number
   JWT_RESET_PASSWORD_EXPIRATION_MINUTES: number
   JWT_VERIFY_EMAIL_EXPIRATION_MINUTES: number
-  POSTGRES_USER: string
-  POSTGRES_PASSWORD: string
-  POSTGRES_DB: string
-  POSTGRES_PORT: number
-  POSTGRES_HOST: string
+  POSTGRES_URL: string
   SMTP_HOST: string
   SMTP_PORT: number
   SMTP_USERNAME: string

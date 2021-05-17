@@ -22,11 +22,7 @@ const envVarsSchema = Joi.object({
   JWT_VERIFY_EMAIL_EXPIRATION_MINUTES: Joi.number()
     .default(10)
     .description('minutes after which verify email token expires'),
-  POSTGRES_USER: Joi.string().default('root'),
-  POSTGRES_PASSWORD: Joi.string().default('root'),
-  POSTGRES_DB: Joi.string().default('boilerplate'),
-  POSTGRES_PORT: Joi.number().default(3000),
-  POSTGRES_HOST: Joi.string().default('localhost'),
+  POSTGRES_URL: Joi.string().required().description('PostgreSQL url'),
   SMTP_HOST: Joi.string().description('server that will send the emails'),
   SMTP_PORT: Joi.number().description('port to connect to the email server'),
   SMTP_USERNAME: Joi.string().description('username for email server'),
@@ -56,11 +52,10 @@ export default {
     verifyEmailExpirationMinutes: envVars.JWT_VERIFY_EMAIL_EXPIRATION_MINUTES
   },
   postgres: {
-    host: envVars.POSTGRES_HOST,
-    user: envVars.POSTGRES_USER,
-    password: envVars.POSTGRES_PASSWORD,
-    database: envVars.POSTGRES_DB,
-    port: envVars.POSTGRES_PORT
+    url: envVars.NODE_ENV === 'test' ? 'sqlite::memory' : envVars.POSTGRES_URL,
+    options: {
+      logging: false
+    }
   },
   email: {
     smtp: {
