@@ -3,9 +3,12 @@ import { userOneAccessToken } from '../../../../tests/fixtures/token-fixture'
 import { insertUsers, userOne } from '../../../../tests/fixtures/user-fixture'
 import app from '../../../app'
 import { Token, User } from '../../../config/db'
+import envVars from '../../../config/envVars'
 import { transport } from '../../../config/transport'
 import { emailService } from '../../../services'
+import { generateToken, saveToken } from '../../../services/token-service'
 import { TokenType } from '../../../types/rest-api'
+import { dateAdd } from '../../../utils/date'
 
 describe('User routes', () => {
   describe('GET /v1/users', () => {
@@ -118,6 +121,34 @@ describe('User routes', () => {
 
       test('should return 400 if verify email token is missing', async () => {
         await request(app).post('/v1/users/verify/email').send().expect(400)
+      })
+
+      test('should return 401 if verify email token is blacklisted', async () => {
+        await insertUsers([userOne])
+        const expires = dateAdd(
+          new Date(),
+          'minute',
+          envVars.jwt.verifyEmailExpirationMinutes
+        )
+        const verifyEmailToken = generateToken(
+          userOne.id,
+          expires,
+          TokenType.refresh
+        )
+        await saveToken(
+          verifyEmailToken,
+          userOne.id,
+          expires,
+          TokenType.refresh,
+          true
+        )
+
+        await request(app)
+          .post('/v1/users/verify/email')
+          .send({
+            code: verifyEmailToken
+          })
+          .expect(401)
       })
     })
   })
