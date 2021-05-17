@@ -18,7 +18,6 @@ router
     validate(userSchema.validateVerificationSchema),
     userController.validateVerification
   )
-// TODO: Send verification swagger
 // TODO: Forgot password
 // TODO: Change password
 // TODO: Update current user data
@@ -58,23 +57,33 @@ export { router as userRoute }
  * @swagger
  * /users/verify/{type}:
  *   get:
- *     summary: Send verification email
+ *     summary: Send verification request
  *     description: An email will be sent to verify email.
  *     tags: [Users]
  *     security:
  *       - bearerAuth: []
  *     parameters:
- *      - in: path
- *        name: type
- *        schema:
- *          type: string
- *          enum: [email, phone]
- *        required: true
- *        description: Type of verification.
- *        example: email
+ *      - $ref: "#/components/parameters/verificationType"
  *     responses:
  *       "204":
  *         description: No content
  *       "401":
  *         $ref: '#/components/responses/Unauthorized'
+ *   post:
+ *     summary: Validate verification code
+ *     tags: [Users]
+ *     parameters:
+ *      - $ref: "#/components/parameters/verificationType"
+ *     responses:
+ *       "204":
+ *         description: No content
+ *       "401":
+ *         description: 'Verify email failed'
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ *             example:
+ *               status: 'fail'
+ *               message: 'Verify email failed'
  */

@@ -48,6 +48,17 @@ components:
         data:
           type: object
 
+  parameters:
+    verificationType:
+      name: type
+      description: Type of verification.
+      in: path
+      schema:
+        type: string
+        enum: [email, phone]
+      required: true
+      example: email
+
   responses:
     MissingParameters:
       description: 'Missing required parameters'
@@ -59,6 +70,7 @@ components:
             status: 'fail'
             message: 'Password is required'
             data: { password: 'Password is required' }
+    
     Unauthorized:
       description: 'Unauthorized access'
       content:
@@ -69,6 +81,7 @@ components:
             status: 'fail'
             message: 'Please authenticate'
             data: 'Please authenticate'
+    
     NotFound:
       description: 'Not found'
       content:
