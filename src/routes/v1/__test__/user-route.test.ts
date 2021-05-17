@@ -63,8 +63,17 @@ describe('User routes', () => {
       })
 
       test('should return 401 error if access token is missing', async () => {
-        await request(app).get('/v1/users/verify/email').send().expect(401)
+        await request(app).get('/v1/users/verify/email').expect(401)
       })
+    })
+
+    test('should return 400 if invalid type provided', async () => {
+      await insertUsers([userOne])
+
+      await request(app)
+        .get('/v1/users/verify/invalidType')
+        .set('Authorization', `Bearer ${userOneAccessToken}`)
+        .expect(400)
     })
   })
 })
