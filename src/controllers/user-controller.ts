@@ -1,7 +1,7 @@
-import { emailService, tokenService } from '../services'
+import { emailService, tokenService, userService } from '../services'
 import { UserAttributes } from '../types/model'
 import { catchAsync } from '../utils/catch-async'
-import { FailResponse, SuccessResponse } from '../utils/jsend'
+import { SuccessResponse } from '../utils/jsend'
 
 const getUser = catchAsync(async (req, res) => {
   const user: Partial<UserAttributes> = req.user!
@@ -17,10 +17,6 @@ const getUser = catchAsync(async (req, res) => {
 const requestVerification = catchAsync(async (req, res) => {
   const verifyType: string = req.params.type
 
-  if (!['email', 'phone'].includes(verifyType)) {
-    throw new FailResponse(400, 'Invalid verification type')
-  }
-
   let token: string
   if (verifyType === 'email') {
     token = await tokenService.generateVerifyEmailToken(
@@ -34,4 +30,14 @@ const requestVerification = catchAsync(async (req, res) => {
   res.status(204).send()
 })
 
-export { getUser, requestVerification }
+const validateVerification = catchAsync(async (req, res) => {
+  const verifyType: string = req.params.type
+
+  if (verifyType === 'email') {
+    await userService.verifyEmail(req.body.code)
+  }
+
+  res.status(204).send()
+})
+
+export { getUser, requestVerification, validateVerification }

@@ -1,12 +1,24 @@
 import { Router } from 'express'
 import { userController } from '../../controllers'
 import { auth } from '../../middlewares/auth'
+import { validate } from '../../middlewares/validate'
+import { userSchema } from '../../validations'
 
 const router = Router()
 
 router.get('/', auth(), userController.getUser)
-router.get('/verify/:type', auth(), userController.requestVerification)
-// TODO: Send verification
+router
+  .route('/verify/:type')
+  .get(
+    validate(userSchema.requestVerificationSchema),
+    auth(),
+    userController.requestVerification
+  )
+  .post(
+    validate(userSchema.validateVerificationSchema),
+    userController.validateVerification
+  )
+// TODO: Send verification swagger
 // TODO: Forgot password
 // TODO: Change password
 // TODO: Update current user data
