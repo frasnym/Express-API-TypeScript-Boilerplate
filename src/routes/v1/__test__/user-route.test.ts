@@ -2,9 +2,10 @@ import request from 'supertest'
 import { userOneAccessToken } from '../../../../tests/fixtures/token-fixture'
 import { insertUsers, userOne } from '../../../../tests/fixtures/user-fixture'
 import app from '../../../app'
-import { Token } from '../../../config/db'
+import { Token, User } from '../../../config/db'
 import { transport } from '../../../config/transport'
 import { emailService } from '../../../services'
+import { TokenType } from '../../../types/rest-api'
 
 describe('User routes', () => {
   describe('GET /v1/users', () => {
@@ -74,6 +75,46 @@ describe('User routes', () => {
         .get('/v1/users/verify/invalidType')
         .set('Authorization', `Bearer ${userOneAccessToken}`)
         .expect(400)
+    })
+  })
+
+  describe('POST /v1/users/verify/:type', () => {
+    beforeEach(() => {
+      jest.spyOn(transport, 'sendMail').mockResolvedValue(undefined)
+    })
+
+    describe('Email Verification', () => {
+      test('should return 204 and verify the email', async () => {
+        await insertUsers([userOne])
+        await request(app)
+          .get('/v1/users/verify/email')
+          .set('Authorization', `Bearer ${userOneAccessToken}`)
+          .expect(204)
+
+        const token = await Token.findOne({
+          where: {
+            userId: userOne.id
+          }
+        })
+
+        await request(app)
+          .post('/v1/users/verify/email')
+          .send({
+            code: token?.token
+          })
+          .expect(204)
+
+        const dbUser = await User.findByPk(userOne.id)
+        expect(dbUser?.isEmailVerified).toBe(true)
+
+        const dbVerifyEmailToken = await Token.count({
+          where: {
+            userId: userOne.id,
+            type: TokenType.verifyEmail
+          }
+        })
+        expect(dbVerifyEmailToken).toBe(0)
+      })
     })
   })
 })
