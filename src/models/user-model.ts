@@ -12,7 +12,10 @@ export function UserFactory(sequelize: Sequelize): UserStatic {
     email: {
       type: DataTypes.STRING,
       allowNull: false,
-      unique: true
+      unique: true,
+      validate: {
+        isEmail: true
+      }
     },
     isEmailVerified: {
       type: DataTypes.BOOLEAN,

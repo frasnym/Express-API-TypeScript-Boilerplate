@@ -11,16 +11,13 @@ import { dateAdd } from '../../../utils/date'
 
 describe('Auth Routes', () => {
   describe('POST /v1/auth/signup', () => {
-    let newUser: Partial<UserAttributes>
-    beforeEach(() => {
-      newUser = {
-        name: 'random_name',
-        email: 'Random_address@email.com',
-        password: 'password1',
-        phone: '6281999200555',
-        pin: '123456'
-      }
-    })
+    const newUser: Partial<UserAttributes> = {
+      name: 'random_name',
+      email: 'Random_address@email.com',
+      password: 'password1',
+      phone: '6281999200555',
+      pin: '123456'
+    }
 
     test('should return 201 and successfully register user if request data is ok', async () => {
       const res = await request(app)
