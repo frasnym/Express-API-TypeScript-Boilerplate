@@ -150,6 +150,29 @@ describe('User routes', () => {
           })
           .expect(401)
       })
+
+      test('should return 401 if verify email token is expired', async () => {
+        await insertUsers([userOne])
+        const verifyEmailTokenExpires = dateAdd(new Date(), 'minute', -1)
+        const verifyEmailToken = generateToken(
+          userOne.id,
+          verifyEmailTokenExpires,
+          TokenType.verifyEmail
+        )
+        await saveToken(
+          verifyEmailToken,
+          userOne.id,
+          verifyEmailTokenExpires,
+          TokenType.verifyEmail
+        )
+
+        await request(app)
+          .post('/v1/users/verify/email')
+          .send({
+            code: verifyEmailToken
+          })
+          .expect(401)
+      })
     })
   })
 })
