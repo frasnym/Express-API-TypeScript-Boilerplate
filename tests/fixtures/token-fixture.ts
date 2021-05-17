@@ -10,10 +10,10 @@ const accessTokenExpires = dateAdd(
   'minute',
   envVars.jwt.accessExpirationMinutes
 )
-const useOneAccessToken = generateToken(
+const userOneAccessToken = generateToken(
   userOne.id,
   accessTokenExpires,
   TokenType.access
 )
 
-export { useOneAccessToken }
+export { userOneAccessToken }

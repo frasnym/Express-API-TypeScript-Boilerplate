@@ -105,8 +105,6 @@ const generateAuthTokens = async (
 
 /**
  * Generate verify email token
- * @param {string} email
- * @returns {Promise<string>}
  */
 const generateVerifyEmailToken = async (user: UserAttributes) => {
   const expires = dateAdd(

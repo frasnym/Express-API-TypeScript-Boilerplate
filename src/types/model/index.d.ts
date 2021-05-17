@@ -10,6 +10,7 @@ export interface UserAttributes {
   name: string
   phone: string
   email: string
+  isEmailVerified: boolean
   pin: string
   password: string
   createdAt?: Date

@@ -14,6 +14,11 @@ export function UserFactory(sequelize: Sequelize): UserStatic {
       allowNull: false,
       unique: true
     },
+    isEmailVerified: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: false
+    },
     name: {
       type: DataTypes.STRING,
       allowNull: false

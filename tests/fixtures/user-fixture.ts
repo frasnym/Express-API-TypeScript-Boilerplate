@@ -11,6 +11,7 @@ const userOne: UserAttributes = {
   name: 'My name is user one',
   password,
   email: 'user_one@email.com',
+  isEmailVerified: false,
   phone: '6281000111222',
   pin: '123456'
 }

@@ -34,6 +34,7 @@ describe('Auth Routes', () => {
         id: expect.anything(),
         name: newUser.name,
         email: newUser.email?.toLowerCase(),
+        isEmailVerified: false,
         phone: newUser.phone
       })
 
@@ -131,6 +132,7 @@ describe('Auth Routes', () => {
         id: expect.anything(),
         name: userOne.name,
         email: userOne.email?.toLowerCase(),
+        isEmailVerified: userOne.isEmailVerified,
         phone: userOne.phone
       })
 
