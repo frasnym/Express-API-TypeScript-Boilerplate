@@ -30,7 +30,7 @@ const signIn = catchAsync(async (req, res) => {
 const signOut = catchAsync(async (req, res) => {
   await authService.signOut(req.body.refreshToken)
 
-  res.status(204).send()
+  res.status(200).send(new SuccessResponse().serializeResponse())
 })
 
 const refreshToken = catchAsync(async (req, res) => {

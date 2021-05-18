@@ -2,7 +2,7 @@ export class SuccessResponse {
   public readonly status = 'success'
   public data: any
 
-  constructor(data: any) {
+  constructor(data: any = null) {
     this.data = data
   }
 

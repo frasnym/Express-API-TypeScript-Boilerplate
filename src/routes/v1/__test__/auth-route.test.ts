@@ -176,7 +176,7 @@ describe('Auth Routes', () => {
   })
 
   describe('POST /v1/auth/signout', () => {
-    test('should return 204 if refresh token is valid', async () => {
+    test('should return 200 if refresh token is valid', async () => {
       await insertUsers([userOne])
 
       const signInCredentials = {
@@ -193,7 +193,7 @@ describe('Auth Routes', () => {
       await request(app)
         .post('/v1/auth/signout')
         .send({ refreshToken })
-        .expect(204)
+        .expect(200)
 
       const tokenDoc = await Token.findByPk(refreshToken)
       expect(tokenDoc).toBeNull()
@@ -220,7 +220,7 @@ describe('Auth Routes', () => {
       await request(app)
         .post('/v1/auth/signout')
         .send({ refreshToken })
-        .expect(204)
+        .expect(200)
 
       await request(app)
         .post('/v1/auth/signout')

@@ -39,7 +39,7 @@ describe('User routes', () => {
     })
 
     describe('Email Verification', () => {
-      test('should return 204 and send verification email to the user', async () => {
+      test('should return 200 and send verification email to the user', async () => {
         await insertUsers([userOne])
         const sendVerificationEmailSpy = jest.spyOn(
           emailService,
@@ -49,7 +49,7 @@ describe('User routes', () => {
         await request(app)
           .get('/v1/users/verify/email')
           .set('Authorization', `Bearer ${userOneAccessToken}`)
-          .expect(204)
+          .expect(200)
 
         expect(sendVerificationEmailSpy).toHaveBeenCalledWith(
           userOne.email,
@@ -87,12 +87,12 @@ describe('User routes', () => {
     })
 
     describe('Email Verification', () => {
-      test('should return 204 and verify the email', async () => {
+      test('should return 200 and verify the email', async () => {
         await insertUsers([userOne])
         await request(app)
           .get('/v1/users/verify/email')
           .set('Authorization', `Bearer ${userOneAccessToken}`)
-          .expect(204)
+          .expect(200)
 
         const token = await Token.findOne({
           where: {
@@ -105,7 +105,7 @@ describe('User routes', () => {
           .send({
             code: token?.token
           })
-          .expect(204)
+          .expect(200)
 
         const dbUser = await User.findByPk(userOne.id)
         expect(dbUser?.isEmailVerified).toBe(true)
@@ -177,13 +177,13 @@ describe('User routes', () => {
   })
 
   describe('POST /v1/users/reset-password', () => {
-    test.todo('should return 204 and send reset password to the user')
+    test.todo('should return 200 and send reset password to the user')
     test.todo('should throw 400 if invalid email provided')
     test.todo('should throw 404 if email does not belong to any user')
   })
 
   describe('PATCH /v1/users/reset-password', () => {
-    test.todo('should return 204 and reset the password')
+    test.todo('should return 200 and reset the password')
     test.todo('should return 400 if reset password token is missing')
     test.todo('should return 401 if reset password token is blacklisted')
     test.todo('should return 401 if reset password token is expired')

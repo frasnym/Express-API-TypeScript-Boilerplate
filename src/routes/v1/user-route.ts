@@ -74,7 +74,7 @@ export { router as userRoute }
  *     parameters:
  *      - $ref: "#/components/parameters/verificationType"
  *     responses:
- *       "204":
+ *       "200":
  *         description: No content
  *       "401":
  *         $ref: '#/components/responses/Unauthorized'
@@ -84,7 +84,7 @@ export { router as userRoute }
  *     parameters:
  *      - $ref: "#/components/parameters/verificationType"
  *     responses:
- *       "204":
+ *       "200":
  *         description: No content
  *       "401":
  *         description: 'Verify email failed'

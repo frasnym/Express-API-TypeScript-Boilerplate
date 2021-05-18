@@ -27,7 +27,7 @@ const requestVerification = catchAsync(async (req, res) => {
     token = 'TODO Token Phone'
   }
   await emailService.sendVerificationEmail(req.user!.email, token)
-  res.status(204).send()
+  res.status(200).send(new SuccessResponse().serializeResponse())
 })
 
 const validateVerification = catchAsync(async (req, res) => {
@@ -37,7 +37,7 @@ const validateVerification = catchAsync(async (req, res) => {
     await userService.verifyEmail(req.body.code)
   }
 
-  res.status(204).send()
+  res.status(200).send(new SuccessResponse().serializeResponse())
 })
 
 const forgotPassword = catchAsync(async (req, res) => {
@@ -45,12 +45,12 @@ const forgotPassword = catchAsync(async (req, res) => {
     req.body.email
   )
   await emailService.sendResetPasswordEmail(req.body.email, resetPasswordToken)
-  res.status(204).send()
+  res.status(200).send(new SuccessResponse().serializeResponse())
 })
 
 const resetPassword = catchAsync(async (req, res) => {
   await userService.resetPassword(req.body.token, req.body.password)
-  res.status(204).send()
+  res.status(200).send(new SuccessResponse().serializeResponse())
 })
 
 export {
