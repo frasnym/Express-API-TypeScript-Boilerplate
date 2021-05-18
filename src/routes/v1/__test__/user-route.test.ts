@@ -181,4 +181,13 @@ describe('User routes', () => {
     test.todo('should throw 400 if invalid email provided')
     test.todo('should throw 404 if email does not belong to any user')
   })
+
+  describe('PATCH /v1/users/reset-password', () => {
+    test.todo('should return 204 and reset the password')
+    test.todo('should return 400 if reset password token is missing')
+    test.todo('should return 401 if reset password token is blacklisted')
+    test.todo('should return 401 if reset password token is expired')
+    test.todo('should return 401 if user is not found')
+    test.todo('should return 400 if password is missing or invalid')
+  })
 })

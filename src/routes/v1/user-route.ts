@@ -24,6 +24,7 @@ router
     validate(userSchema.forgotPasswordSchema),
     userController.forgotPassword
   )
+  .patch(validate(userSchema.resetPasswordSchema), userController.resetPassword)
 // TODO: Forgot password swagger
 // TODO: Change password
 // TODO: Forgot PIN

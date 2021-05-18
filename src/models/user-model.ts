@@ -50,7 +50,7 @@ export function UserFactory(sequelize: Sequelize): UserStatic {
     }
   })
 
-  User.beforeCreate(async (user, _options) => {
+  User.beforeSave(async (user, _options) => {
     if (user.changed('password')) {
       user.password = await bcrypt.hash(user.password, 8)
     }

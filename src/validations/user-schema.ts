@@ -1,5 +1,6 @@
 import Joi from 'joi'
 import { IValidation } from '../middlewares/validate'
+import { password } from './custom-schema'
 
 const requestVerificationSchema: IValidation = {
   params: {
@@ -22,8 +23,16 @@ const forgotPasswordSchema: IValidation = {
   })
 }
 
+const resetPasswordSchema: IValidation = {
+  body: Joi.object({
+    token: Joi.string().required(),
+    password: Joi.string().min(8).required().custom(password)
+  })
+}
+
 export {
   requestVerificationSchema,
   validateVerificationSchema,
-  forgotPasswordSchema
+  forgotPasswordSchema,
+  resetPasswordSchema
 }
