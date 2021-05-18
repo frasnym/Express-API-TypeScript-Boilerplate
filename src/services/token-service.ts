@@ -1,10 +1,11 @@
 import jwt from 'jsonwebtoken'
+import { userService } from '.'
 import { Token } from '../config/db'
 import envVars from '../config/envVars'
 import { UserAttributes } from '../types/model'
 import { AuthToken, JWTPayload, TokenType } from '../types/rest-api'
 import { dateAdd } from '../utils/date'
-import { ErrorResponse } from '../utils/jsend'
+import { ErrorResponse, FailResponse } from '../utils/jsend'
 
 /**
  * Generate token
@@ -122,6 +123,28 @@ const generateVerifyEmailToken = async (user: UserAttributes) => {
 }
 
 /**
+ * Generate reset password token
+ */
+const generateResetPasswordToken = async (email: string) => {
+  const user = await userService.getUserByEmail(email)
+  if (!user) {
+    throw new FailResponse(404, 'No users found with this email')
+  }
+  const expires = dateAdd(
+    new Date(),
+    'minute',
+    envVars.jwt.resetPasswordExpirationMinutes
+  )
+  const resetPasswordToken = generateToken(
+    user.id,
+    expires,
+    TokenType.resetPassword
+  )
+  await saveToken(resetPasswordToken, user.id, expires, TokenType.resetPassword)
+  return resetPasswordToken
+}
+
+/**
  * Verify token and return token doc (or throw an error if it is not valid)
  */
 const verifyToken = async (token: string, type: TokenType) => {
@@ -137,9 +160,10 @@ const verifyToken = async (token: string, type: TokenType) => {
 }
 
 export {
+  generateToken,
   generateAuthTokens,
   generateVerifyEmailToken,
-  generateToken,
+  generateResetPasswordToken,
   saveToken,
   verifyToken
 }

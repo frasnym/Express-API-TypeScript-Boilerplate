@@ -40,4 +40,12 @@ const validateVerification = catchAsync(async (req, res) => {
   res.status(204).send()
 })
 
-export { getUser, requestVerification, validateVerification }
+const forgotPassword = catchAsync(async (req, res) => {
+  const resetPasswordToken = await tokenService.generateResetPasswordToken(
+    req.body.email
+  )
+  await emailService.sendResetPasswordEmail(req.body.email, resetPasswordToken)
+  res.status(204).send()
+})
+
+export { getUser, requestVerification, validateVerification, forgotPassword }

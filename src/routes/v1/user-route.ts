@@ -18,8 +18,16 @@ router
     validate(userSchema.validateVerificationSchema),
     userController.validateVerification
   )
-// TODO: Forgot password
+router
+  .route('/reset-password')
+  .post(
+    validate(userSchema.forgotPasswordSchema),
+    userController.forgotPassword
+  )
+// TODO: Forgot password swagger
 // TODO: Change password
+// TODO: Forgot PIN
+// TODO: Change PIN
 // TODO: Update current user data
 
 export { router as userRoute }

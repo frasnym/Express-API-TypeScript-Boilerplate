@@ -175,4 +175,10 @@ describe('User routes', () => {
       })
     })
   })
+
+  describe('POST /v1/users/reset-password', () => {
+    test.todo('should return 204 and send reset password to the user')
+    test.todo('should throw 400 if invalid email provided')
+    test.todo('should throw 404 if email does not belong to any user')
+  })
 })

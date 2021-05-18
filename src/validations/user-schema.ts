@@ -16,4 +16,14 @@ const validateVerificationSchema: IValidation = {
   })
 }
 
-export { requestVerificationSchema, validateVerificationSchema }
+const forgotPasswordSchema: IValidation = {
+  body: Joi.object({
+    email: Joi.string().required().email().lowercase()
+  })
+}
+
+export {
+  requestVerificationSchema,
+  validateVerificationSchema,
+  forgotPasswordSchema
+}
