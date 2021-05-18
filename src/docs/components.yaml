@@ -48,6 +48,17 @@ components:
         data:
           type: object
 
+    Success:
+      type: object
+      properties:
+        status:
+          type: string
+          example: 'success'
+        data:
+          type: object
+          nullable: true
+          example: null
+
   parameters:
     verificationType:
       name: type

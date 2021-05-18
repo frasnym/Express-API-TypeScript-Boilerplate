@@ -79,6 +79,9 @@ export { router as authRoute }
  *             schema:
  *               type: object
  *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: success
  *                 user:
  *                   $ref: '#/components/schemas/User'
  *                 tokens:
@@ -122,6 +125,9 @@ export { router as authRoute }
  *             schema:
  *               type: object
  *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: success
  *                 user:
  *                   $ref: '#/components/schemas/User'
  *                 tokens:
@@ -159,7 +165,11 @@ export { router as authRoute }
  *               refreshToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjcxLCJpYXQiOjE2MTk3NTI1NzcwMzMsImV4cCI6MTYyMjM0NDU3NzAzMSwidHlwZSI6InJlZnJlc2gifQ.sTkIdmfV9noCP6IYKcxU7WJPjYNyxYqR8tiEAjANk1E
  *     responses:
  *       "200":
- *         description: Succesfully signed out
+ *         description: Success signed out
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Success'
  *       "404":
  *         $ref: '#/components/responses/NotFound'
  */
@@ -187,6 +197,13 @@ export { router as authRoute }
  *     responses:
  *       "200":
  *         description: Succesfully refresh authorization
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Success'
+ *               properties:
+ *                 data:
+ *                   $ref: '#/components/schemas/AuthTokens'
  *       "401":
  *         $ref: '#/components/responses/Unauthorized'
  */

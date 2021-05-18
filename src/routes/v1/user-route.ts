@@ -25,8 +25,6 @@ router
     userController.forgotPassword
   )
   .patch(validate(userSchema.resetPasswordSchema), userController.resetPassword)
-// TODO: Forgot password swagger
-// TODO: Change password
 // TODO: Forgot PIN
 // TODO: Change PIN
 // TODO: Update current user data
@@ -54,9 +52,9 @@ export { router as userRoute }
  *         content:
  *           application/json:
  *             schema:
- *               type: object
+ *               $ref: '#/components/schemas/Success'
  *               properties:
- *                 user:
+ *                 data:
  *                   $ref: '#/components/schemas/User'
  *       "401":
  *         $ref: '#/components/responses/Unauthorized'
@@ -75,7 +73,11 @@ export { router as userRoute }
  *      - $ref: "#/components/parameters/verificationType"
  *     responses:
  *       "200":
- *         description: No content
+ *         description: Success request verification
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Success'
  *       "401":
  *         $ref: '#/components/responses/Unauthorized'
  *   post:
@@ -85,7 +87,11 @@ export { router as userRoute }
  *      - $ref: "#/components/parameters/verificationType"
  *     responses:
  *       "200":
- *         description: No content
+ *         description: Success validate verification
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Success'
  *       "401":
  *         description: 'Verify email failed'
  *         content:
@@ -95,4 +101,76 @@ export { router as userRoute }
  *             example:
  *               status: 'fail'
  *               message: 'Verify email failed'
+ */
+
+/**
+ * @swagger
+ * /auth/reset-password:
+ *   post:
+ *     summary: Forgot password
+ *     description: An email will be sent to reset password.
+ *     tags: [Auth]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - email
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 format: email
+ *             example:
+ *               email: fake@example.com
+ *     responses:
+ *       "200":
+ *         description: Success request reset password token
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Success'
+ *       "404":
+ *         $ref: '#/components/responses/NotFound'
+ *   patch:
+ *     summary: Reset password
+ *     tags: [Auth]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - email
+ *               - password
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 format: email
+ *               password:
+ *                 type: string
+ *                 format: password
+ *                 minLength: 8
+ *                 description: At least one number and one letter
+ *             example:
+ *               email: fake@example.com
+ *               password: password1
+ *     responses:
+ *       "200":
+ *         description: Success reset password
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Success'
+ *       "401":
+ *         description: Password reset failed
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ *             example:
+ *               code: 401
+ *               message: Password reset failed
  */
