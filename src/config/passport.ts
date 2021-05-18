@@ -4,9 +4,8 @@ import {
   StrategyOptions,
   VerifyCallback
 } from 'passport-jwt'
-import { tokenTypes } from './tokens'
 import envVars from './envVars'
-import { JWTPayload } from '../types/rest-api'
+import { JWTPayload, TokenType } from '../types/rest-api'
 import { User } from './db'
 
 const jwtOptions: StrategyOptions = {
@@ -16,7 +15,7 @@ const jwtOptions: StrategyOptions = {
 
 const jwtVerify: VerifyCallback = async (payload: JWTPayload, done) => {
   try {
-    if (payload.type !== tokenTypes.ACCESS) {
+    if (payload.type !== TokenType.access) {
       throw new Error('Invalid token type')
     }
 

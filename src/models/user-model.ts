@@ -1,6 +1,6 @@
 import { DataTypes, Op, Sequelize } from 'sequelize'
 import bcrypt from 'bcryptjs'
-import { UserAttributes, UserModel, UserStatic } from '../types/rest-api'
+import { UserAttributes, UserModel, UserStatic } from '../types/model'
 
 export function UserFactory(sequelize: Sequelize): UserStatic {
   const User = <UserStatic>sequelize.define('users', {
@@ -12,7 +12,15 @@ export function UserFactory(sequelize: Sequelize): UserStatic {
     email: {
       type: DataTypes.STRING,
       allowNull: false,
-      unique: true
+      unique: true,
+      validate: {
+        isEmail: true
+      }
+    },
+    isEmailVerified: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: false
     },
     name: {
       type: DataTypes.STRING,

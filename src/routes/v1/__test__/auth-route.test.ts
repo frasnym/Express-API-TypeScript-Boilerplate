@@ -4,23 +4,20 @@ import { insertUsers, userOne } from '../../../../tests/fixtures/user-fixture'
 import app from '../../../app'
 import { Token, User } from '../../../config/db'
 import envVars from '../../../config/envVars'
-import { tokenTypes } from '../../../config/tokens'
 import { generateToken, saveToken } from '../../../services/token-service'
-import { JWTPayload, TokenType, UserAttributes } from '../../../types/rest-api'
+import { JWTPayload, TokenType } from '../../../types/rest-api'
+import { UserAttributes } from '../../../types/model'
 import { dateAdd } from '../../../utils/date'
 
 describe('Auth Routes', () => {
   describe('POST /v1/auth/signup', () => {
-    let newUser: Partial<UserAttributes>
-    beforeEach(() => {
-      newUser = {
-        name: 'random_name',
-        email: 'Random_address@email.com',
-        password: 'password1',
-        phone: '6281999200555',
-        pin: '123456'
-      }
-    })
+    const newUser: Partial<UserAttributes> = {
+      name: 'random_name',
+      email: 'Random_address@email.com',
+      password: 'password1',
+      phone: '6281999200555',
+      pin: '123456'
+    }
 
     test('should return 201 and successfully register user if request data is ok', async () => {
       const res = await request(app)
@@ -34,6 +31,7 @@ describe('Auth Routes', () => {
         id: expect.anything(),
         name: newUser.name,
         email: newUser.email?.toLowerCase(),
+        isEmailVerified: false,
         phone: newUser.phone
       })
 
@@ -131,6 +129,7 @@ describe('Auth Routes', () => {
         id: expect.anything(),
         name: userOne.name,
         email: userOne.email?.toLowerCase(),
+        isEmailVerified: userOne.isEmailVerified,
         phone: userOne.phone
       })
 
@@ -266,7 +265,7 @@ describe('Auth Routes', () => {
       const refreshToken = generateToken(
         userOne.id,
         refreshTokenExpires,
-        tokenTypes.REFRESH
+        TokenType.refresh
       )
       await saveToken(
         refreshToken,
@@ -289,7 +288,7 @@ describe('Auth Routes', () => {
         res.body.data.refresh.token
       )
       expect(dbRefreshTokenDoc).toMatchObject({
-        type: tokenTypes.REFRESH,
+        type: TokenType.refresh,
         userId: userOne.id,
         blacklisted: false
       })
@@ -314,7 +313,7 @@ describe('Auth Routes', () => {
         sub: userOne.id,
         iat: new Date().getTime(),
         exp: refreshTokenExpires.getTime(),
-        type: tokenTypes.REFRESH
+        type: TokenType.refresh
       }
       const refreshToken = jwt.sign(payload, 'invalidJWTSecret')
 
@@ -340,7 +339,7 @@ describe('Auth Routes', () => {
       const refreshToken = generateToken(
         userOne.id,
         refreshTokenExpires,
-        tokenTypes.REFRESH
+        TokenType.refresh
       )
 
       await request(app)
@@ -359,7 +358,7 @@ describe('Auth Routes', () => {
       const refreshToken = generateToken(
         userOne.id,
         refreshTokenExpires,
-        tokenTypes.REFRESH
+        TokenType.refresh
       )
       await saveToken(
         refreshToken,
@@ -381,7 +380,7 @@ describe('Auth Routes', () => {
       const refreshToken = generateToken(
         userOne.id,
         refreshTokenExpires,
-        tokenTypes.REFRESH
+        TokenType.refresh
       )
       await saveToken(
         refreshToken,

@@ -1,21 +1,21 @@
 import jwt from 'jsonwebtoken'
 import { Token } from '../config/db'
 import envVars from '../config/envVars'
-import { tokenTypes } from '../config/tokens'
-import {
-  AuthToken,
-  JWTPayload,
-  TokenType,
-  UserAttributes
-} from '../types/rest-api'
+import { UserAttributes } from '../types/model'
+import { AuthToken, JWTPayload, TokenType } from '../types/rest-api'
 import { dateAdd } from '../utils/date'
 import { ErrorResponse } from '../utils/jsend'
 
 /**
  * Generate token
  */
-const generateToken = (userId: number, expires: Date, type: string): string => {
-  if (!(Object.values(tokenTypes).indexOf(type) > -1)) {
+const generateToken = (
+  userId: number,
+  expires: Date,
+  type: TokenType
+): string => {
+  const tokenTypes = ['access', 'refresh', 'resetPassword', 'verifyEmail']
+  if (!tokenTypes.includes(type)) {
     const stack = {
       location: 'generateToken',
       expected: tokenTypes,
@@ -69,7 +69,7 @@ const generateAuthTokens = async (
   const accessToken = generateToken(
     user.id!,
     accessTokenExpires,
-    tokenTypes.ACCESS
+    TokenType.access
   )
 
   const refreshTokenExpires = dateAdd(
@@ -81,7 +81,7 @@ const generateAuthTokens = async (
   const refreshToken = generateToken(
     user.id!,
     refreshTokenExpires,
-    tokenTypes.REFRESH
+    TokenType.refresh
   )
 
   await saveToken(
@@ -104,6 +104,24 @@ const generateAuthTokens = async (
 }
 
 /**
+ * Generate verify email token
+ */
+const generateVerifyEmailToken = async (user: UserAttributes) => {
+  const expires = dateAdd(
+    new Date(),
+    'minute',
+    envVars.jwt.verifyEmailExpirationMinutes
+  )
+  const verifyEmailToken = generateToken(
+    user.id,
+    expires,
+    TokenType.verifyEmail
+  )
+  await saveToken(verifyEmailToken, user.id, expires, TokenType.verifyEmail)
+  return verifyEmailToken
+}
+
+/**
  * Verify token and return token doc (or throw an error if it is not valid)
  */
 const verifyToken = async (token: string, type: TokenType) => {
@@ -118,4 +136,10 @@ const verifyToken = async (token: string, type: TokenType) => {
   return tokenDoc
 }
 
-export { generateAuthTokens, generateToken, saveToken, verifyToken }
+export {
+  generateAuthTokens,
+  generateVerifyEmailToken,
+  generateToken,
+  saveToken,
+  verifyToken
+}

@@ -39,7 +39,7 @@ app.use(/^[/]{1}$/, (_req, res) => {
 
 // send back a 404 error for any unknown api request
 app.use(/(?<=.{1}).+/, () => {
-  throw new FailResponse(404, 'Not found', 'Not found')
+  throw new FailResponse(404, 'Not found')
 })
 
 // convert error to JSend Error, if needed

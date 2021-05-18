@@ -20,7 +20,7 @@ export class FailResponse extends Error {
   constructor(
     public statusCode: number,
     public message: string,
-    public data: any
+    public data: any = message
   ) {
     super(message)
     Object.setPrototypeOf(this, FailResponse.prototype)

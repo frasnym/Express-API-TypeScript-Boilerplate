@@ -1,5 +1,5 @@
 import { DataTypes, Sequelize } from 'sequelize'
-import { TokenStatic } from '../types/rest-api'
+import { TokenStatic } from '../types/model'
 
 export function TokenFactory(sequelize: Sequelize): TokenStatic {
   const Token = <TokenStatic>sequelize.define('tokens', {

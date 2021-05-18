@@ -1,18 +1,16 @@
 import { NextFunction, Request, Response } from 'express'
 
 import passport from 'passport'
-import { UserAttributes } from '../types/rest-api'
+import { UserAttributes } from '../types/model'
 import { FailResponse } from '../utils/jsend'
 
 const verifyCallback = (
   req: Request,
   resolve: (value: unknown) => void,
   reject: (reason?: any) => void
-) => async (err: Error, user: Partial<UserAttributes>) => {
+) => async (err: Error, user: UserAttributes) => {
   if (err || !user) {
-    return reject(
-      new FailResponse(401, 'Please authenticate', 'Please authenticate')
-    )
+    return reject(new FailResponse(401, 'Please authenticate'))
   }
   req.user = user
 

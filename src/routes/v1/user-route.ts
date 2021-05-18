@@ -1,12 +1,23 @@
 import { Router } from 'express'
 import { userController } from '../../controllers'
 import { auth } from '../../middlewares/auth'
+import { validate } from '../../middlewares/validate'
+import { userSchema } from '../../validations'
 
 const router = Router()
 
 router.get('/', auth(), userController.getUser)
-// TODO: Request verification
-// TODO: Send verification
+router
+  .route('/verify/:type')
+  .get(
+    validate(userSchema.requestVerificationSchema),
+    auth(),
+    userController.requestVerification
+  )
+  .post(
+    validate(userSchema.validateVerificationSchema),
+    userController.validateVerification
+  )
 // TODO: Forgot password
 // TODO: Change password
 // TODO: Update current user data
@@ -40,4 +51,39 @@ export { router as userRoute }
  *                   $ref: '#/components/schemas/User'
  *       "401":
  *         $ref: '#/components/responses/Unauthorized'
+ */
+
+/**
+ * @swagger
+ * /users/verify/{type}:
+ *   get:
+ *     summary: Send verification request
+ *     description: An email will be sent to verify email.
+ *     tags: [Users]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *      - $ref: "#/components/parameters/verificationType"
+ *     responses:
+ *       "204":
+ *         description: No content
+ *       "401":
+ *         $ref: '#/components/responses/Unauthorized'
+ *   post:
+ *     summary: Validate verification code
+ *     tags: [Users]
+ *     parameters:
+ *      - $ref: "#/components/parameters/verificationType"
+ *     responses:
+ *       "204":
+ *         description: No content
+ *       "401":
+ *         description: 'Verify email failed'
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ *             example:
+ *               status: 'fail'
+ *               message: 'Verify email failed'
  */
