@@ -1,12 +1,12 @@
 import envVars from '../config/envVars'
-import { transport } from '../config/transport'
+import { mailer } from '../config/mailer'
 
 /**
  * Send an email
  */
 const sendEmail = async (to: string, subject: string, text: string) => {
   const msg = { from: envVars.email.from, to, subject, text }
-  await transport.sendMail(msg)
+  await mailer.sendMail(msg)
 }
 
 /**

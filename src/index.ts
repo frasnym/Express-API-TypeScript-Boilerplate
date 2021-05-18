@@ -2,7 +2,7 @@ import app from './app'
 import { logger } from './config/logger'
 import envVars from './config/envVars'
 import { dbConfig } from './config/db'
-import { transport } from './config/transport'
+import { mailer } from './config/mailer'
 import { Server } from 'http'
 
 const PORT = envVars.port
@@ -11,7 +11,7 @@ let server: Server
 dbConfig
   .sync()
   .then(() => logger.info('[Sequelize] All models were synchronized'))
-  .then(() => transport.verify())
+  .then(() => mailer.verify())
   .then(() => logger.info('[Nodemailer] Connected to email server'))
   .then(() => {
     server = app.listen(PORT, () => {

@@ -4,7 +4,7 @@ import { insertUsers, userOne } from '../../../../tests/fixtures/user-fixture'
 import app from '../../../app'
 import { Token, User } from '../../../config/db'
 import envVars from '../../../config/envVars'
-import { transport } from '../../../config/transport'
+import { mailer } from '../../../config/mailer'
 import { emailService } from '../../../services'
 import { generateToken, saveToken } from '../../../services/token-service'
 import { TokenType } from '../../../types/rest-api'
@@ -35,7 +35,7 @@ describe('User routes', () => {
 
   describe('GET /v1/users/verify/:type', () => {
     beforeEach(() => {
-      jest.spyOn(transport, 'sendMail').mockResolvedValue(undefined)
+      jest.spyOn(mailer, 'sendMail').mockResolvedValue(undefined)
     })
 
     describe('Email Verification', () => {
@@ -83,7 +83,7 @@ describe('User routes', () => {
 
   describe('POST /v1/users/verify/:type', () => {
     beforeEach(() => {
-      jest.spyOn(transport, 'sendMail').mockResolvedValue(undefined)
+      jest.spyOn(mailer, 'sendMail').mockResolvedValue(undefined)
     })
 
     describe('Email Verification', () => {
